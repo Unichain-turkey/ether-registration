@@ -1,5 +1,8 @@
 <template>
-  <p>Hello UniChain</p>
+  <div>
+    <p>Hello UniChain</p>
+    <div>{{$store.getters.web3state}}</div>
+  </div>
 </template>
 
 <script>
