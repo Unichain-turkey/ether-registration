@@ -4,12 +4,13 @@ pragma solidity ^0.4.4;
 contract Ownable {
 
   address public owner;
-  bool  isActive;
+  bool  isActive; 
   bool  isPayActive;
-  uint price;
+  
 
 
   event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+  
 
 
   function Ownable() public {

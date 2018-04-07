@@ -1,7 +1,7 @@
 var Migrations = artifacts.require("./Migrations.sol");
-var Activity   = artifacts.require("./Activity.sol");
+var Activity   = artifacts.require("./Activitycontract.sol");
 
 module.exports = function(deployer) {
   deployer.deploy(Migrations);
-  deployer.deploy(Activity,80,"Amme hizmeti");
+  deployer.deploy(Activity);
 };
