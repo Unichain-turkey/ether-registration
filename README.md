@@ -5,6 +5,9 @@
 ## Build Setup
 
 ``` bash
+# go into folder that include package.json file
+cd dapp
+
 # install dependencies
 npm install
 
