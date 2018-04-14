@@ -1,10 +1,11 @@
-# smart-activity
+# ether-registration
 
-> A Vue.js project
+> Activity registration app by using smart contracts
 
 ## Build Setup
 
 ``` bash
+
 # go into folder that include package.json file
 cd dapp
 
