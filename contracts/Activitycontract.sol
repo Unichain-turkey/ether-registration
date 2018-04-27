@@ -8,7 +8,7 @@ contract Activitycontract is Ownable
     mapping(address => Activity) activities;
     mapping(uint => address) activitiestIndex;
     uint numberOfActivity;
-    
+
     struct Activity {
         string   activityName;
         address   activityOwner;
@@ -22,7 +22,7 @@ contract Activitycontract is Ownable
 
         mapping(address => Participant) participants;
         mapping(uint => address) participantIndex;
-    
+
     }
 
 
@@ -39,11 +39,11 @@ contract Activitycontract is Ownable
     event ParticipantRegisteredAt(string activityName,address _activityOwner,address usr, string email,uint value);
     event ParticipantDeletedAt(string activityName,address _activityOwner, address usr, string email,uint value);
     event ParticipantPayBackAt(string activityName,address _activityOwner, address usr, string email,uint value);
-    
+
     event ActivityCreated(string _activityName,address _owner,uint _participantLimit);
     event ActivityOwnershipTransferred(string  _activityName,address indexed previousOwner, address indexed newOwner);
 
-     function Activitycontract() public {
+    function Activitycontract() public {
         owner = msg.sender;
         isActive=true;
     }
@@ -56,20 +56,20 @@ contract Activitycontract is Ownable
         require(activities[_act].activityOwner == msg.sender);
         _;
     }
-    
+
     function createActivity(string _activityName,uint _participantLimit)
     onlyActive
     payable
     public
-    {   
-   
+    {
+
         if (msg.value != 1* 10**17 ){ //assume 0.1 ether to prevent DDOS, 0.01 ether :)
             revert();
-        } 
+        }
         require(activities[msg.sender].activityOwner == address(0)); //if has not  create an activity before
         activities[msg.sender] = Activity(
             {
-            activityName:_activityName, 
+            activityName:_activityName,
             activityOwner:msg.sender,
             isActive:false,
             isPayActive:false,
@@ -81,22 +81,22 @@ contract Activitycontract is Ownable
             });
         numberOfActivity++;//start with index 1
         activitiestIndex[numberOfActivity] = msg.sender;
-        
+
         ActivityCreated(_activityName,msg.sender,_participantLimit);
-           
+
 
     }
-  
-    function registerToActivity(address _activity,string _email) 
+
+    function registerToActivity(address _activity,string _email)
     onlyActive
     onlyActiveActivity(_activity)
     payable
     public {
         require(!isRegistered(_activity,msg.sender));
-        
+
         Activity storage activity = activities[_activity];
         require(activity.registeredUserCount < activity.participantLimit);
-        
+
         require(msg.value > activity.price); //price control
 
         activity.registeredUserCount++;
@@ -108,10 +108,10 @@ contract Activitycontract is Ownable
 
     function isRegistered(address _activity,address _partipantaddr) public constant returns (bool) {
         Activity storage activity = activities[_activity];//may be this is unnecassry
-     
-        return  activity.activityOwner!=address(0) && 
-                activity.participants[_partipantaddr].addr != address(0)  &&
-                !activity.participants[_partipantaddr].deleted;
+
+        return  activity.activityOwner!=address(0) &&
+        activity.participants[_partipantaddr].addr != address(0)  &&
+        !activity.participants[_partipantaddr].deleted;
     }
 
 
@@ -127,11 +127,11 @@ contract Activitycontract is Ownable
     function getTotalActivity() public constant returns (uint) {
         return numberOfActivity;
     }
-    
+
     function getTotalParticipant(address _activity) public constant returns (uint) {
         return activities[_activity].registeredUserCount;
     }
-    
+
 
     function getParticipantLimit(address _activity) public constant returns (uint) {
         return activities[_activity].participantLimit;
@@ -142,7 +142,7 @@ contract Activitycontract is Ownable
     function getParticipiant(address _activity,uint idx) public
     onlyActive
     onlyOwnerActivity(_activity)
-    constant 
+    constant
     returns (uint index, string email, address addr,uint256 value)
     {
         Activity storage activity = activities[_activity];
@@ -151,7 +151,7 @@ contract Activitycontract is Ownable
         return (idx, participant.email, participant.addr,participant.value);
     }
 
-    function deleteParticipiant(address _activity,uint idx) public 
+    function deleteParticipiant(address _activity,uint idx) public
     onlyActive
     onlyOwnerActivity(_activity)
     {
@@ -159,7 +159,7 @@ contract Activitycontract is Ownable
         address userAddr = activity.participantIndex[idx];
         Participant storage participant = activity.participants[userAddr];
 
-        
+
         require(!participant.deleted); //is not deleted
         require(!participant.payBack);  //is not payBack
 
@@ -175,7 +175,7 @@ contract Activitycontract is Ownable
     function validateStudentStatus(address _activity,uint idx, bool isValidated)
     onlyActive
     onlyOwnerActivity(_activity)
-    public 
+    public
     {
         Activity storage activity = activities[_activity];
         address userAddr = activity.participantIndex[idx];
@@ -185,14 +185,14 @@ contract Activitycontract is Ownable
 
 
     // if we will share invitation link like this,we must change this method because string is visibile on blockexplorer :)
-    function setParticipationLink(address _activity,string url) public 
+    function setParticipationLink(address _activity,string url) public
     onlyActive
     onlyOwnerActivity(_activity) {
         Activity storage activity = activities[_activity];
         activity.participationUrl = url;
     }
 
-    function setPrice(address _activity,uint _price) public 
+    function setPrice(address _activity,uint _price) public
     onlyActive
     onlyOwnerActivity(_activity) {
         Activity storage activity = activities[_activity];
@@ -210,7 +210,7 @@ contract Activitycontract is Ownable
         activity.isActive = false;
     }
 
-    function openParticipation(address _activity) public  
+    function openParticipation(address _activity) public
     onlyActive
     onlyOwnerActivity(_activity) {
         Activity storage activity = activities[_activity];
@@ -222,13 +222,13 @@ contract Activitycontract is Ownable
         Activity storage activity = activities[_activity];
         activity.isPayActive = false;
     }
-    
+
     function openPayActive(address _activity) public  onlyActive
     onlyOwnerActivity(_activity) {
         Activity storage activity = activities[_activity];
         activity.isPayActive = true;
     }
-    
+
 
 
     //only Owner set validateNumber=keccak256(key), during lesson we will share only key to participants
@@ -259,7 +259,7 @@ contract Activitycontract is Ownable
         Activity storage activity = activities[_activity];
         activity.validateNumber=_hash;
     }
-    function getValidate(address _activity) 
+    function getValidate(address _activity)
     onlyOwnerActivity(_activity)
     public view returns(bytes32)
     {
