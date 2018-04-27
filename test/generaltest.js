@@ -50,6 +50,19 @@ contract("Creating Activities",function(accounts){
             assert.equal(result.c,activities.length,"Patladi" )
         });
     });
+    it('all activities name  is okey',function(){
+
+        activities.forEach(function(item,index) {
+            var contractInstance;
+            activity.deployed().then(function(instance){
+                contractInstance=instance;
+                return instance.getActivityName(accounts[index]);
+            }).then(function(result) {
+                assert.equal(result,item[0],"Patladi" )
+            });
+        })
+
+    });
     it('balance of contracts is okey ',function(){
         var contractInstance;
         activity.deployed().then(function(instance){
@@ -57,6 +70,15 @@ contract("Creating Activities",function(accounts){
             return web3.eth.getBalance(contractInstance.address).toNumber();
         }).then(function(result) {
             assert.equal(result, web3.toWei(activities.length*0.1, 'ether'), 'The Balance is not same');
+        });
+    });
+    it('register to activity ',function(){
+        var contractInstance;
+        activity.deployed().then(function(instance){
+            contractInstance=instance;
+            return instance.getActivityName(accounts[index]);
+        }).then(function(result) {
+            console.log()
         });
     });
     

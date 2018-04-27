@@ -97,7 +97,7 @@ contract Activitycontract is Ownable
         Activity storage activity = activities[_activity];
         require(activity.registeredUserCount < activity.participantLimit);
 
-        require(msg.value > activity.price); //price control
+        require(msg.value > activity.price * 10**17); //price control 1*ether value,now 0.1 ether
 
         activity.registeredUserCount++;
         activity.participants[msg.sender] = Participant(_email, false,false, msg.sender, false,msg.value);
@@ -188,45 +188,38 @@ contract Activitycontract is Ownable
     function setParticipationLink(address _activity,string url) public
     onlyActive
     onlyOwnerActivity(_activity) {
-        Activity storage activity = activities[_activity];
-        activity.participationUrl = url;
+        activities[_activity].participationUrl = url;
     }
 
     function setPrice(address _activity,uint _price) public
     onlyActive
     onlyOwnerActivity(_activity) {
-        Activity storage activity = activities[_activity];
-        activity.price = _price;
+        activities[_activity].price = _price;
     }
     function getPrice(address _activity) public view returns(uint) {
-        Activity storage activity = activities[_activity];
-        return activity.price;
+        return activities[_activity].price;
     }
 
     function closeParticipation(address _activity) public
     onlyActive
     onlyOwnerActivity(_activity) {
-        Activity storage activity = activities[_activity];
-        activity.isActive = false;
+        activities[_activity].isActive = false;
     }
 
     function openParticipation(address _activity) public
     onlyActive
     onlyOwnerActivity(_activity) {
-        Activity storage activity = activities[_activity];
-        activity.isActive = true;
+        activities[_activity].isActive = true;
     }
 
     function closePayActive(address _activity) public  onlyActive
     onlyOwnerActivity(_activity) {
-        Activity storage activity = activities[_activity];
-        activity.isPayActive = false;
+        activities[_activity].isPayActive = false;
     }
 
     function openPayActive(address _activity) public  onlyActive
     onlyOwnerActivity(_activity) {
-        Activity storage activity = activities[_activity];
-        activity.isPayActive = true;
+        activities[_activity].isPayActive = true;
     }
 
 
@@ -274,7 +267,10 @@ contract Activitycontract is Ownable
         ActivityOwnershipTransferred(activity.activityName,owner, newOwner);
         activity.activityOwner = newOwner;
     }
-
+    
+    function getActivityName(address _activity) public constant returns(string){
+        return activities[_activity].activityName;
+    }
     function getActive() public constant returns(bool){
         return isActive;
     }
