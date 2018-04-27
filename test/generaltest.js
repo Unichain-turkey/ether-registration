@@ -2,7 +2,7 @@ var activity  = artifacts.require("./Activitycontract.sol");
 
 
 
-var activities=[["egitim",100],
+var activities=[["egitim",100], ["hayir",3],  ["mevlut",2],];
   /*  ["amme hizmeti",1000],
     ["hayir",3],
     ["mevlut",2],
@@ -10,42 +10,53 @@ var activities=[["egitim",100],
     ["helva",70],
     ["cenaze",90],
     ["gun",120],
-    */
+
 ];
+ */
 var productAddress=[];
 
 contract("Creating Activities",function(accounts){
 
-    it('Number of Activity',function(){
+    it('initial state',function(){
         var contractInstance;
         activity.deployed().then(function(instance){
             contractInstance=instance;
             return instance.getTotalActivity();
         }).then(function(result) {
-            console.log(result.c);
+            assert(result.c[0]==0,"Patladi");
         });
     });
 
-    activities.forEach(function(product) {
+    activities.forEach(function(item,index) {
         
-        it('Activity '+product[0]+' created:',function(){
+        it(item[0]+' activity created',function(){
             var contractInstance;
             activity.deployed().then(function(instance){
                 contractInstance=instance;
-                return instance.createActivity(product[0],product[1],{value:web3.toWei(0.1,'ether'),from:accounts[0]});
+                return instance.createActivity(item[0],item[1],{value:web3.toWei(0.1,'ether'),from:accounts[index]});
             }).then(function(result){
-                 console.log(web3.eth.getBalance(contractInstance.address));
+                assert(result.logs[0].event=='ActivityCreated',"Patladi")
+
             })
         });
 
     });
-    it('Number of Activity',function(){
+    it('all activities is created',function(){
         var contractInstance;
         activity.deployed().then(function(instance){
             contractInstance=instance;
             return instance.getTotalActivity();
         }).then(function(result) {
-            console.log(result.c);
+            assert.equal(result.c,activities.length,"Patladi" )
+        });
+    });
+    it('balance of contracts is okey ',function(){
+        var contractInstance;
+        activity.deployed().then(function(instance){
+            contractInstance=instance;
+            return web3.eth.getBalance(contractInstance.address).toNumber();
+        }).then(function(result) {
+            assert.equal(result, web3.toWei(activities.length*0.1, 'ether'), 'The Balance is not same');
         });
     });
     

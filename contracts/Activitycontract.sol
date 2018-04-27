@@ -5,23 +5,23 @@ import "./Ownable.sol";
 contract Activitycontract is Ownable
 {
 
-    mapping(address => Activity) activities;
-    mapping(uint => address) activitiestIndex;
-    uint numberOfActivity;
+    mapping(address => Activity) activities;        //owner of activity to map  Activity struct 
+    mapping(uint => address) activitiestIndex;      //index of activity to map  address of activity owner 
+    uint numberOfActivity;                          
 
     struct Activity {
         string   activityName;
         address   activityOwner;
-        bool  isActive;
+        bool  isActive;             
         bool  isPayActive;
         uint price;
         uint participantLimit;
-        uint registeredUserCount;
+        uint registeredUserCount;   
         string    participationUrl ;//we should change this ,string is visible :)
         bytes32   validateNumber ;//this is a hash  to participant verify themselves for payback money
 
-        mapping(address => Participant) participants;
-        mapping(uint => address) participantIndex;
+        mapping(address => Participant) participants; //address of user to map Participant struct
+        mapping(uint => address) participantIndex;    //index of user to map address of user
 
     }
 
@@ -29,11 +29,11 @@ contract Activitycontract is Ownable
 
     struct Participant {
         string email;
-        bool validated;
-        bool payBack;
+        bool validated; 
+        bool payBack;   
         address addr;
         bool deleted;
-        uint256 value;
+        uint256 value; //amount of deposid ,maybe this is unnecassry :)
     }
 
     event ParticipantRegisteredAt(string activityName,address _activityOwner,address usr, string email,uint value);
@@ -44,7 +44,7 @@ contract Activitycontract is Ownable
     event ActivityOwnershipTransferred(string  _activityName,address indexed previousOwner, address indexed newOwner);
 
     function Activitycontract() public {
-        owner = msg.sender;
+        owner = msg.sender; //this owner is us :)
         isActive=true;
     }
 
@@ -73,7 +73,7 @@ contract Activitycontract is Ownable
             activityOwner:msg.sender,
             isActive:false,
             isPayActive:false,
-            price:1,
+            price:1,    //only  owner of activity  can change
             participantLimit:_participantLimit,
             registeredUserCount:0,
             participationUrl:"",
