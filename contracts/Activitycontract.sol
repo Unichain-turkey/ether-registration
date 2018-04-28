@@ -71,7 +71,7 @@ contract Activitycontract is Ownable
             {
             activityName:_activityName,
             activityOwner:msg.sender,
-            isActive:false,
+            isActive:true,
             isPayActive:false,
             price:1,    //only  owner of activity  can change
             participantLimit:_participantLimit,
@@ -97,7 +97,8 @@ contract Activitycontract is Ownable
         Activity storage activity = activities[_activity];
         require(activity.registeredUserCount < activity.participantLimit);
 
-        require(msg.value > activity.price * 10**17); //price control 1*ether value,now 0.1 ether
+
+        require(msg.value >= activity.price * 10**17); //price control 1*ether value,now 0.1 ether
 
         activity.registeredUserCount++;
         activity.participants[msg.sender] = Participant(_email, false,false, msg.sender, false,msg.value);
