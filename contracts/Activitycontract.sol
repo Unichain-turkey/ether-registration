@@ -121,8 +121,7 @@ contract Activitycontract is Ownable
     onlyActiveActivity(_activity)
     constant returns (string) {
         require(isRegistered(_activity,msg.sender));
-        Activity storage activity = activities[_activity];
-        require(activity.participants[msg.sender].validated);
+        require(activities[_activity].participants[msg.sender].validated);
         return activity.participationUrl;
     }
     function getTotalActivity() public constant returns (uint) {

@@ -90,20 +90,27 @@ contract("Creating Activities",function(accounts){
                 catch (error) {
                     if(isRevertError(error))
                         assert(false,'Failed reason of exceess participant limit ');
-
                 }
-
 
             });
 
         })
 
-        it("Check number of registered Users", async () => {
+        it("checking participants", async () => {
             _contract = await Activity.deployed();
-            const result = await _contract.getTotalParticipant(accounts[0]);
-            assert(result.c[0],participants.length,"Sayilar Eşit Değil")
-        });
+            for (i = 0; i < activities[0][1]; i++) {
+                const result = await _contract.getParticipiant(accounts[0],i+1);
+                assert(result[1] == participants[i], "Patladi")
+            }
 
+        });
+        it("try to set setValidateNumber without being admin", async () => {
+            _contract = await Activity.deployed();
+            const result = await _contract.setValidateNumber("c29aac4eb2f2ad0984ef1b2631a65d50b113fd86cd88961818929f10693ac036",accounts[0],i+1);
+                assert(result[1] == participants[i], "Patladi")
+
+
+        });
 
     });
 
