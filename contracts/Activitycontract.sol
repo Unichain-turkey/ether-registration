@@ -43,9 +43,10 @@ contract Activitycontract is Ownable
     event ActivityCreated(string _activityName,address _owner,uint _participantLimit);
     event ActivityOwnershipTransferred(string  _activityName,address indexed previousOwner, address indexed newOwner);
 
-    function Activitycontract() public {
+    function Activitycontract(bool _isActive,bool _isPayActive) public {
         owner = msg.sender; //this owner is us :)
-        isActive=true;
+        isActive=_isActive;
+        isPayActive=_isPayActive;
     }
 
     modifier onlyActiveActivity(address _act) {
@@ -122,7 +123,7 @@ contract Activitycontract is Ownable
     constant returns (string) {
         require(isRegistered(_activity,msg.sender));
         require(activities[_activity].participants[msg.sender].validated);
-        return activity.participationUrl;
+        return activities[_activity].participationUrl;
     }
     function getTotalActivity() public constant returns (uint) {
         return numberOfActivity;
@@ -137,6 +138,12 @@ contract Activitycontract is Ownable
         return activities[_activity].participantLimit;
     }
 
+    function leaveActivity(address _activity)
+    onlyActive
+    onlyActiveActivity(_activity)
+    public view{
+        require(isRegistered(_activity,msg.sender));
+    }
 
     //Admin methods
     function getParticipiant(address _activity,uint idx) public
@@ -241,20 +248,21 @@ contract Activitycontract is Ownable
 
         participant.payBack=true;
 
-        participant.addr.transfer(participant.value);//if is it fail ,throws on failure
+        participant.addr.transfer(participant.value * 5);//if is it fail ,throws on failure
+        //multipy 5 for only test
         ParticipantPayBackAt(activity.activityName,activity.activityOwner,msg.sender,participant.email,participant.value);
 
 
     }
-    function setValidateNumber(address _activity,bytes32 _hash) public
+    function setValidateHash(address _activity,bytes32 _hash) public
     onlyActive
     onlyOwnerActivity(_activity){
         Activity storage activity = activities[_activity];
         activity.validateNumber=_hash;
     }
-    function getValidate(address _activity)
+    function getValidateHash(address _activity)
     onlyOwnerActivity(_activity)
-    public view returns(bytes32)
+    public constant returns(bytes32)
     {
         return activities[_activity].validateNumber;
     }

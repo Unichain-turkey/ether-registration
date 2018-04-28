@@ -106,10 +106,45 @@ contract("Creating Activities",function(accounts){
         });
         it("try to set setValidateNumber without being admin", async () => {
             _contract = await Activity.deployed();
-            const result = await _contract.setValidateNumber("c29aac4eb2f2ad0984ef1b2631a65d50b113fd86cd88961818929f10693ac036",accounts[0],i+1);
-                assert(result[1] == participants[i], "Patladi")
+            try {
+                const result = await _contract.setValidateHash(accounts[0],'0xc29aac4eb2f2ad0984ef1b2631a65d50b113fd86cd88961818929f10693ac036',
+                {
+                        from: accounts[1]
+                });
+            }
+            catch (error) {
+                assert.isOk(isRevertError(error), 'Unccessfull');
+            }
+        });
+        it("set setValidateNumber  with being admin", async () => {
+            _contract = await Activity.deployed();
+            try {
+                const result = await _contract.setValidateHash(accounts[0],'0xc29aac4eb2f2ad0984ef1b2631a65d50b113fd86cd88961818929f10693ac036',
+                    {
+                        from: accounts[0]
+                    });
+            }
+            catch (error) {
 
+                assert.isOk(isRevertError(error), 'Unccessfull');
+            }
+        });
 
+        it("get validateNumber ", async () => {
+            _contract = await Activity.deployed();
+            const result = await _contract.getValidateHash(accounts[0], {from: accounts[0]});
+            assert('0xc29aac4eb2f2ad0984ef1b2631a65d50b113fd86cd88961818929f10693ac036',result,"Patlati")
+        });
+        it("try to payback my money ", async () => {
+            _contract = await Activity.deployed();
+            try {
+                const result = await _contract.validateMeReturnMoney(accounts[0],"unichain",
+                    {from: accounts[6]});
+                assert(result.logs[0].event == 'ParticipantPayBackAt', "Patladi")
+            }
+            catch (error) {
+                assert(false,'Failed  to payback my money ');
+            }
         });
 
     });
