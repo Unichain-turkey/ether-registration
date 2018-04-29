@@ -1,7 +1,7 @@
 var Activity  = artifacts.require("./Activitycontract.sol");
 
 
-var activities=[["egitim",3], ["hayir",3],  ["mevlut",2],]; //3 account use
+var activities=[["egitim",4], ["hayir",3],  ["mevlut",2],]; //3 account use
 var participants=["altuntasfatih42@gmail.com" ,"marmarablockchain@gmail.com","marmara@marmara.edu.tr","unichain@unichain.com"]; // use 4 acounts
 
 
@@ -125,7 +125,6 @@ contract("Creating Activities",function(accounts){
                     });
             }
             catch (error) {
-
                 assert.isOk(isRevertError(error), 'Unccessfull');
             }
         });

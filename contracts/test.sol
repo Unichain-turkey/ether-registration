@@ -2,8 +2,11 @@ pragma solidity ^0.4.4;
 contract Test {
     bytes32 value;
 
+    event valuechanged(bytes32 _newValue);
+
     function setValue(string _key) public{ //defaultda bu olmucak
         value=keccak256(_key);
+        valuechanged(value);
     }
 
     function setHash(bytes32 _hash) public{
@@ -21,3 +24,12 @@ contract Test {
 
 
 }
+
+    
+
+
+
+
+
+
+

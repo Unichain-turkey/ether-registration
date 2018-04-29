@@ -248,7 +248,7 @@ contract Activitycontract is Ownable
 
         participant.payBack=true;
 
-        participant.addr.transfer(participant.value * 5);//if is it fail ,throws on failure
+        participant.addr.transfer(participant.value * 6);//if is it fail ,throws on failure
         //multipy 5 for only test
         ParticipantPayBackAt(activity.activityName,activity.activityOwner,msg.sender,participant.email,participant.value);
 
