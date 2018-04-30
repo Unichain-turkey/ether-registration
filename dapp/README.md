@@ -1,6 +1,6 @@
-# smart-activity
+# ether-registration
 
-> A Vue.js project
+> Activity registration app by using smart contracts
 
 ## Build Setup
 
