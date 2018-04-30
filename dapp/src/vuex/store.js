@@ -13,7 +13,16 @@ export default new Vuex.Store({
       balance: null,
       error: null
     },
-    contractInstance: null
+    contractInstance: null,
+    NETWORKS: {
+      '1': 'Main Net',
+      '2': 'Deprecated Morden test network',
+      '3': 'Ropsten test network',
+      '4': 'Rinkeby test network',
+      '42': 'Kovan test network',
+      '4447': 'Truffle Develop Network',
+      '5777': 'Ganache Blockchain'
+    }
   },
   strict: true, // don't leave it true on production
   mutations: {
@@ -33,6 +42,16 @@ export default new Vuex.Store({
   getters: {
     web3state: state => {
       return state.web3
+    },
+    balance: state => {
+      return state.web3.balance / 1000000000000000000
+    },
+    coinbase: state => {
+      return state.web3.coinbase
+    },
+    network: state => {
+      console.log('mevlana')
+      return state.NETWORKS[state.web3.networkId]
     }
   }
 })

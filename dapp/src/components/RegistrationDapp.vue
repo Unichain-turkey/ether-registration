@@ -1,14 +1,16 @@
 <template>
-<side-component></side-component>
+  <div>
+    <activity-component></activity-component>
+  </div>
 </template>
 
 <script>
-import SideComp from '@/components/SideComponent'
+import Activity from '@/components/Activity'
 import Web3 from 'web3'
 export default {
   name: 'registration-dapp',
   components: {
-    'side-component': SideComp
+    'activity-component': Activity
   },
   beforeCreate () {
     console.log('dapp component is coming')
