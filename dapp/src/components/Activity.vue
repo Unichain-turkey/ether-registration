@@ -2,7 +2,7 @@
   <div>
     <header-component></header-component>
     <div class="container">
-      <form>
+      <form @submit.prevent="createActivityButton()">
         <div class="form-group">
           <label for="exampleFormControlInput1">Activity Name</label>
           <input type="text" class="form-control" id="exampleFormControlInput1" v-model="activity_name" placeholder="Meeting">
@@ -59,6 +59,8 @@
 
 <script>
 import Header from '@/components/Header'
+import Web3 from 'web3'
+import {ABI, address} from '../../../build/contracts/DenemeContract'
 export default {
   name: 'Activity',
   components: {
@@ -73,8 +75,20 @@ export default {
       participant_limit: null,
       // validation_number: null,
       activity_list: null,
-      pending: false
+      pending: false,
+      contractCreationValue: 0.5
     }
+  },
+  beforeCreate () {
+    new Promise(function (resolve, reject) {
+      let web3 = new Web3(window.web3.currentProvider)
+      let casinoContract = web3.eth.contract(ABI)
+      let casinoContractInstance = casinoContract.at(address)
+      resolve(casinoContractInstance)
+    })
+      .then(result => {
+        this.$store.dispatch('setContract', result)
+      }).catch(e => console.log(e))
   },
   methods: {
     getList () {
@@ -85,6 +99,31 @@ export default {
     },
     refreshList () {
       this.activity_list += 5
+    },
+    createActivityButton () {
+      this.pending = true
+      this.$store.getters.contractInstance().createActivity(
+        this.activity_name,
+        this.participant_limit,
+        this.is_active,
+        this.is_pay_active,
+        this.price,
+        {
+          gas: 300000,
+          value: this.$store.getters.web3InstanceGetter().toWei(0.005, 'ether'),
+          from: this.$store.getters.currentAddress
+        },
+        (err, result) => {
+          if (err) {
+            console.log(err)
+            this.pending = false
+          } else {
+            console.log('Created')
+            console.log(result)
+            this.pending = false
+          }
+        }
+      )
     }
   }
 }
