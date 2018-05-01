@@ -27,31 +27,42 @@ export default new Vuex.Store({
   strict: true, // don't leave it true on production
   mutations: {
     CREATEWEB3 (state, result) {
-      console.log(result)
       state.web3.balance = result.balance
       state.web3.coinbase = result.coinbase
       state.web3.networkId = result.networkId
       state.web3.isInjected = result.injectedWeb3
+      state.web3.web3Instance = result.web3
+    },
+    SETCONTRACTINSTANCE (state, result) {
+      state.contractInstance = () => result
     }
   },
   actions: {
     createWeb3 ({ commit }, result) {
       commit('CREATEWEB3', result)
+    },
+    setContract ({ commit }, result) {
+      commit('SETCONTRACTINSTANCE', result)
     }
   },
   getters: {
     web3state: state => {
       return state.web3
     },
-    balance: state => {
-      return state.web3.balance / 1000000000000000000
+    web3InstanceGetter: state => {
+      return state.web3.web3Instance
     },
-    coinbase: state => {
+    balance: state => {
+      return (state.web3.balance / 1000000000000000000).toFixed(4)
+    },
+    currentAddress: state => {
       return state.web3.coinbase
     },
     network: state => {
-      console.log('mevlana')
       return state.NETWORKS[state.web3.networkId]
+    },
+    contractInstance: state => {
+      return state.contractInstance
     }
   }
 })
