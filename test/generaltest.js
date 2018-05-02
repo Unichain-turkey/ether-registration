@@ -11,9 +11,7 @@ const isRevertError = (error) => {
     const revert = error.message.search('revert') >= 0;
     return invalidOpcode || outOfGas || revert;
 }
-
-
-
+console.log("Address of activity contract :",Activity.address);
 contract("Creating Activities",function(accounts){
     let _contract;
     it('initial state',function(){
@@ -31,7 +29,7 @@ contract("Creating Activities",function(accounts){
             var contractInstance;
             Activity.deployed().then(function (instance) {
                 contractInstance = instance;
-                return instance.createActivity(item[0], item[1], {
+                return instance.createActivity(item[0], item[1],1, {
                     value: web3.toWei(0.1, 'ether'),
                     from: accounts[index]
                 });

@@ -46,6 +46,7 @@
           <li>{{this.pending}}</li>
         </ul>
       </div>
+      <!--
       <div>
         <p>CURRENT ACTIVITIES</p>
         <button type="submit" v-on:click="getList()" class="btn btn-primary mb-2">GET LIST</button>
@@ -53,21 +54,22 @@
         <button type="submit" v-on:click="refreshList()" class="btn btn-primary mb-2">REFRESH LIST</button>
         <p>{{activity_list}}</p>
       </div>
+      -->
     </div>
   </div>
 </template>
 
 <script>
 import Header from '@/components/Header'
-import Web3 from 'web3'
-import {ABI, address} from '../../../build/contracts/DenemeContract'
 export default {
-  name: 'Activity',
+  name: 'CreateActivity',
   components: {
     'header-component': Header
   },
   data () {
     return {
+      c_instance: null,
+      coinbase: null,
       activity_name: '',
       is_pay_active: null,
       is_active: null,
@@ -77,18 +79,18 @@ export default {
       activity_list: null,
       pending: false,
       contractCreationValue: 0.5
+
     }
   },
   beforeCreate () {
-    new Promise(function (resolve, reject) {
-      let web3 = new Web3(window.web3.currentProvider)
-      let casinoContract = web3.eth.contract(ABI)
-      let casinoContractInstance = casinoContract.at(address)
-      resolve(casinoContractInstance)
+  },
+  created () {
+    this.c_instance = this.$store.getters.contractInstance()
+    this.coinbase = this.$store.getters.currentAddress
+    const temp = this.c_instance.methods.getTotalActivity().call()
+    temp.then(function (val) {
+      console.log('Total activity', val)
     })
-      .then(result => {
-        this.$store.dispatch('setContract', result)
-      }).catch(e => console.log(e))
   },
   methods: {
     getList () {
@@ -102,28 +104,17 @@ export default {
     },
     createActivityButton () {
       this.pending = true
-      this.$store.getters.contractInstance().createActivity(
+      console.log('Try to create')
+      const temp = this.c_instance.methods.createActivity(
         this.activity_name,
         this.participant_limit,
-        this.is_active,
-        this.is_pay_active,
-        this.price,
-        {
-          gas: 300000,
-          value: this.$store.getters.web3InstanceGetter().toWei(0.005, 'ether'),
-          from: this.$store.getters.currentAddress
-        },
-        (err, result) => {
-          if (err) {
-            console.log(err)
-            this.pending = false
-          } else {
-            console.log('Created')
-            console.log(result)
-            this.pending = false
-          }
-        }
-      )
+        this.price
+      ).send(
+        {value: this.$options.filters.toWei('0.1'), from: this.coinbase, gas: 4700000})
+      temp.then(function (error, value) {
+        console.log(error)
+        console.log(value)
+      })
     }
   }
 }

@@ -30,7 +30,7 @@ export default new Vuex.Store({
       state.web3.balance = result.balance
       state.web3.coinbase = result.coinbase
       state.web3.networkId = result.networkId
-      state.web3.isInjected = result.injectedWeb3
+      state.web3.isInjected = result.isInjected
       state.web3.web3Instance = result.web3
     },
     SETCONTRACTINSTANCE (state, result) {
