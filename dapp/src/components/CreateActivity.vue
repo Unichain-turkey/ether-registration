@@ -1,6 +1,5 @@
 <template>
   <div>
-    <header-component></header-component>
     <div class="container">
       <form @submit.prevent="createActivityButton()">
         <div class="form-group">
@@ -60,12 +59,8 @@
 </template>
 
 <script>
-import Header from '@/components/Header'
 export default {
   name: 'CreateActivity',
-  components: {
-    'header-component': Header
-  },
   data () {
     return {
       c_instance: null,

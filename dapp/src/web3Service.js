@@ -2,15 +2,17 @@ import Web3 from 'web3'
 
 import activityContract from '../../build/contracts/Activitycontract.json'
 
-var addrActivityContract = '0x6bc14e2b97792ce63b084b529fbf5e8ca826cfb2'
+var addrActivityContract = '0x88c015d75be972177f171efcf6fd708d095c83b5'
 
 var contractInstance = null
+
 let web3 = window.web3
 var isInjected = false
-
+console.log(window.web3)
 if (typeof web3 !== 'undefined') {
   web3 = new Web3(web3.currentProvider)
   contractInstance = new web3.eth.Contract(activityContract.abi, addrActivityContract)
+  console.log('herer injected')
   isInjected = true
 } else {
   web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
