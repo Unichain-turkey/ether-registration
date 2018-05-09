@@ -58,7 +58,7 @@ contract Activitycontract is Ownable
         _;
     }
 
-    function createActivity(string _activityName,uint _participantLimit)
+    function createActivity(string _activityName,uint _participantLimit,uint _price)
     onlyActive
     payable
     public
@@ -74,7 +74,7 @@ contract Activitycontract is Ownable
             activityOwner:msg.sender,
             isActive:true,
             isPayActive:false,
-            price:1,    //only  owner of activity  can change
+            price:_price,    //only  owner of activity  can change
             participantLimit:_participantLimit,
             registeredUserCount:0,
             participationUrl:"",
