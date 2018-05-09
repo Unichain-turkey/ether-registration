@@ -5,6 +5,7 @@
       <b>Balance: {{$store.getters.balance}} ETH</b>
       <b>Address: {{$store.getters.currentAddress}}</b>
       <b>Network: {{$store.getters.network}}</b>
+      <b>TotalActivity: {{totalActivity}}</b>
       <b></b>
     </nav>
     <div class="jumbotron jumbotron-fluid text-center bg-primary">
@@ -18,7 +19,19 @@
 
 <script>
 export default {
-  name: 'Header'
+  name: 'Header',
+  data: function () {
+    return {
+      totalActivity: null
+    }
+  },
+  created () {
+    const temp = this.$store.getters.contractInstance().methods.getTotalActivity().call()
+    let that = this
+    temp.then(function (val) {
+      that.totalActivity = val
+    })
+  }
 }
 </script>
 
