@@ -26,10 +26,9 @@ export default {
     _contract.getPastEvents('ActivityCreated', { fromBlock: 0, toBlock: 'latest'}, (err, event) => {
       event.forEach((element) => {
         element = element.returnValues
-        this.activities.push({'name': element._activityName, 'address': element._owner, 'limit': element._participantLimit})
+        this.activities.push({'name': element._name, 'address': element._owner, 'limit': element._limit})
       })
     })
-    console.log(this.activities)
   }
 }
 </script>
