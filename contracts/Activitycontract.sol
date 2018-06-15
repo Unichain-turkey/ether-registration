@@ -10,13 +10,14 @@ contract Activitycontract is Ownable
     uint numberOfActivity;                          
 
     struct Activity {
-        string   activityName;
-        address   activityOwner;
+        string   name;
+        address   owner;
         bool  isActive;             
         bool  isPayActive;
         uint price;
-        uint participantLimit;
-        uint registeredUserCount;   
+        uint limit;
+        uint registeredCount;
+        uint date;
         string    participationUrl ;//we should change this ,string is visible :)
         bytes32   validateNumber ;//this is a hash  to participant verify themselves for payback money
 
@@ -36,15 +37,15 @@ contract Activitycontract is Ownable
         uint256 value; //amount of deposid ,maybe this is unnecassry :)
     }
 
-    event ParticipantRegisteredAt(string activityName,address _activityOwner,address usr, string email,uint value);
-    event ParticipantDeletedAt(string activityName,address _activityOwner, address usr, string email,uint value);
-    event ParticipantPayBackAt(string activityName,address _activityOwner, address usr, string email,uint value);
+    event ParticipantRegisteredAt(string name,address _Owner,address usr, string email,uint value);
+    event ParticipantDeletedAt(string name,address _Owner, address usr, string email,uint value);
+    event ParticipantPayBackAt(string name,address _Owner, address usr, string email,uint value);
 
-    event ActivityCreated(string _activityName,address _owner,uint _participantLimit);
-    event ActivityOwnershipTransferred(string  _activityName,address indexed previousOwner, address indexed newOwner);
+    event ActivityCreated(string _name,address _owner,uint _limit,uint _date);
+    event OwnershipTransferred(string  _name,address indexed previousOwner, address indexed newOwner);
 
     function Activitycontract(bool _isActive,bool _isPayActive) public {
-        owner = msg.sender; //this owner is us :)
+        owner = msg.sender;
         isActive=_isActive;
         isPayActive=_isPayActive;
     }
@@ -54,11 +55,11 @@ contract Activitycontract is Ownable
         _;
     }
     modifier onlyOwnerActivity(address _act) {
-        require(activities[_act].activityOwner == msg.sender);
+        require(activities[_act].owner == msg.sender);
         _;
     }
 
-    function createActivity(string _activityName,uint _participantLimit,uint _price)
+    function createActivity(string _name,uint _limit,uint _price,uint _date)
     onlyActive
     payable
     public
@@ -67,23 +68,24 @@ contract Activitycontract is Ownable
         if (msg.value != 1* 10**17 ){ //assume 0.1 ether to prevent DDOS, 0.01 ether :)
             revert();
         }
-        require(activities[msg.sender].activityOwner == address(0)); //if has not  create an activity before
+        // require(activities[msg.sender].owner == address(0)); //if has not  create an activity before
         activities[msg.sender] = Activity(
             {
-            activityName:_activityName,
-            activityOwner:msg.sender,
+            name:_name,
+            owner:msg.sender,
             isActive:true,
             isPayActive:false,
             price:_price,    //only  owner of activity  can change
-            participantLimit:_participantLimit,
-            registeredUserCount:0,
+            limit:_limit,
+            date:_date,
+            registeredCount:0,
             participationUrl:"",
             validateNumber:0
             });
         numberOfActivity++;//start with index 1
         activitiestIndex[numberOfActivity] = msg.sender;
 
-        ActivityCreated(_activityName,msg.sender,_participantLimit);
+        ActivityCreated(_name,msg.sender,_limit,_date);
 
 
     }
@@ -96,28 +98,28 @@ contract Activitycontract is Ownable
         require(!isRegistered(_activity,msg.sender));
 
         Activity storage activity = activities[_activity];
-        require(activity.registeredUserCount < activity.participantLimit);
+        require(activity.registeredCount < activity.limit);
 
 
         require(msg.value >= activity.price * 10**17); //price control 1*ether value,now 0.1 ether
 
-        activity.registeredUserCount++;
+        activity.registeredCount++;
         activity.participants[msg.sender] = Participant(_email, false,false, msg.sender, false,msg.value);
-        activity.participantIndex[activity.registeredUserCount] = msg.sender;
+        activity.participantIndex[activity.registeredCount] = msg.sender;
 
-        ParticipantRegisteredAt(activity.activityName,activity.activityOwner,msg.sender,_email,msg.value);
+        ParticipantRegisteredAt(activity.name,activity.owner,msg.sender,_email,msg.value);
     }
 
     function isRegistered(address _activity,address _partipantaddr) public constant returns (bool) {
         Activity storage activity = activities[_activity];//may be this is unnecassry
 
-        return  activity.activityOwner!=address(0) &&
+        return  activity.owner!=address(0) &&
         activity.participants[_partipantaddr].addr != address(0)  &&
         !activity.participants[_partipantaddr].deleted;
     }
 
 
-    function getMeParticipationUrl(address _activity) public
+    function getParticipationUrl(address _activity) public
     onlyActive
     onlyActiveActivity(_activity)
     constant returns (string) {
@@ -130,12 +132,12 @@ contract Activitycontract is Ownable
     }
 
     function getTotalParticipant(address _activity) public constant returns (uint) {
-        return activities[_activity].registeredUserCount;
+        return activities[_activity].registeredCount;
     }
 
 
-    function getParticipantLimit(address _activity) public constant returns (uint) {
-        return activities[_activity].participantLimit;
+    function getLimit(address _activity) public constant returns (uint) {
+        return activities[_activity].limit;
     }
 
     function leaveActivity(address _activity)
@@ -145,6 +147,12 @@ contract Activitycontract is Ownable
         require(isRegistered(_activity,msg.sender));
     }
 
+    function getInfoActivity(address _activity)
+    public view returns(string,address,bool,uint,uint,uint,uint){
+        Activity storage temp = activities[_activity];
+        return (temp.name,temp.owner,temp.isActive,temp.price,temp.registeredCount,temp.limit,temp.date);
+        
+    }
     //Admin methods
     function getParticipiant(address _activity,uint idx) public
     onlyActive
@@ -172,10 +180,10 @@ contract Activitycontract is Ownable
 
         participant.deleted = true;
         participant.payBack=true;
-        activity.registeredUserCount--;
+        activity.registeredCount--;
 
         participant.addr.transfer(participant.value);//if is it fail ,throws on failure
-        ParticipantDeletedAt(activity.activityName,address(_activity),msg.sender,participant.email,participant.value);
+        ParticipantDeletedAt(activity.name,address(_activity),msg.sender,participant.email,participant.value);
 
     }
 
@@ -245,12 +253,11 @@ contract Activitycontract is Ownable
         require(!participant.deleted); //is not deleted
         require(!participant.payBack);  //is not payBack
 
-
         participant.payBack=true;
 
         participant.addr.transfer(participant.value * 6);//if is it fail ,throws on failure
-        //multipy 5 for only test
-        ParticipantPayBackAt(activity.activityName,activity.activityOwner,msg.sender,participant.email,participant.value);
+        //todo   multiple 5 times for only test, change later
+        ParticipantPayBackAt(activity.name,activity.owner,msg.sender,participant.email,participant.value);
 
 
     }
@@ -272,12 +279,12 @@ contract Activitycontract is Ownable
     public{
         Activity storage activity = activities[_activity];
         require(newOwner != address(0));
-        ActivityOwnershipTransferred(activity.activityName,owner, newOwner);
-        activity.activityOwner = newOwner;
+        OwnershipTransferred(activity.name,owner,newOwner);
+        activity.owner = newOwner;
     }
-    
-    function getActivityName(address _activity) public constant returns(string){
-        return activities[_activity].activityName;
+
+    function getName(address _activity) public constant returns(string){
+        return activities[_activity].name;
     }
     function getActive() public constant returns(bool){
         return isActive;

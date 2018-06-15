@@ -35,6 +35,7 @@ export default new Vuex.Store({
     },
     SETCONTRACTINSTANCE (state, result) {
       state.contractInstance = () => result
+      // todo learn differences
     }
   },
   actions: {
@@ -49,7 +50,7 @@ export default new Vuex.Store({
     web3state: state => {
       return state.web3
     },
-    web3InstanceGetter: state => {
+    web3Instance: state => {
       return state.web3.web3Instance
     },
     balance: state => {
