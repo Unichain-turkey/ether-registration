@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import RegistrationDapp from '@/components/RegistrationDapp.vue'
+import Create from '@/components/CreateActivity.vue'
 import Index from '@/components/Index.vue'
+import Activity from '@/components/ActivityDetail.vue'
 
 Vue.use(Router)
 
@@ -10,7 +11,7 @@ export default new Router({
     {
       path: '/create',
       name: 'registration-dapp',
-      component: RegistrationDapp
+      component: Create
     },
     {
       path: '/',
@@ -19,8 +20,8 @@ export default new Router({
     },
     {
       path: '/activity/:id',
-      name: 'activity-info',
-      component: RegistrationDapp
+      name: 'activity-detail',
+      component: Activity
     }
   ]
 })

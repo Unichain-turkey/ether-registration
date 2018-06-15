@@ -7,10 +7,15 @@ import store from './vuex/store'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import datePicker from 'vue-bootstrap-datetimepicker'
+
+import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
+
 
 import { getNetIdString, getEthWallets, getBalance, isInjected, web3, contractInstance } from './web3Service'
 
 Vue.use(BootstrapVue)
+Vue.use(datePicker);
 Vue.config.productionTip = false
 
 Vue.filter('toWei', (key) => {

@@ -1,7 +1,7 @@
 var Activity  = artifacts.require("./Activitycontract.sol");
 
 
-var activities=[["egitim",4], ["hayir",3],  ["mevlut",2],]; //3 account use
+var activities=[["egitim",4,1529008318], ["hayir",3,1529618318],  ["mevlut",2,1529011318],]; //3 account use
 var participants=["altuntasfatih42@gmail.com" ,"marmarablockchain@gmail.com","marmara@marmara.edu.tr","unichain@unichain.com"]; // use 4 acounts
 
 
@@ -29,10 +29,10 @@ contract("Creating Activities",function(accounts){
             var contractInstance;
             Activity.deployed().then(function (instance) {
                 contractInstance = instance;
-                return instance.createActivity(item[0], item[1],1, {
+                return instance.createActivity(item[0], item[1],1,item[2], {
                     value: web3.toWei(0.1, 'ether'),
                     from: accounts[index]
-                });
+                })
             }).then(function (result) {
                 assert(result.logs[0].event == 'ActivityCreated', "Patladi")
 
@@ -55,7 +55,7 @@ contract("Creating Activities",function(accounts){
             var contractInstance;
             Activity.deployed().then(function(instance){
                 contractInstance=instance;
-                return instance.getActivityName(accounts[index]);
+                return instance.getName(accounts[index]);
             }).then(function(result) {
                 assert.equal(result,item[0],"Patladi" )
             });

@@ -12,7 +12,6 @@ console.log(window.web3)
 if (typeof web3 !== 'undefined') {
   web3 = new Web3(web3.currentProvider)
   contractInstance = new web3.eth.Contract(activityContract.abi, addrActivityContract)
-  console.log('herer injected')
   isInjected = true
 } else {
   web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))

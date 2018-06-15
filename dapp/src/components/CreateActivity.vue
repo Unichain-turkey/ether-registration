@@ -4,7 +4,7 @@
       <form @submit.prevent="createActivityButton()">
         <div class="form-group">
           <label for="exampleFormControlInput1">Activity Name</label>
-          <input type="text" class="form-control" id="exampleFormControlInput1" v-model="activity_name" placeholder="Meeting">
+          <input type="text" class="form-control" id="exampleFormControlInput1" v-model="activity_name" placeholder="Name of ">
         </div>
         <div class="form-check">
           <input class="form-check-input" type="checkbox" v-on:change="free($event)" value="" id="isPayActiveCheck">
@@ -19,12 +19,19 @@
           </label>
         </div>
         <br>
-        <div class="form-group col-md-2" v-show="isActivePrice">
+
+        <div class="form-group col-md-3" v-show="isActivePrice">
           <label for="price">Price</label>
-          <input type="number" class="form-control" v-model="price" id="price">
+          <input type="number" class="form-control" v-model="price" id="price" placeholder="milli ether">
         </div>
+        <div class="form-group col-md-3">
+          <label>When</label>
+          <date-picker v-model="date" ></date-picker>
+
+        </div>
+
         <br>
-        <div class="form-group col-md-2">
+        <div class="form-group col-md-3">
           <label for="participantLimit">Participant Limit</label>
           <input type="number" class="form-control" v-model="participant_limit" id="participantLimit">
         </div>
@@ -34,8 +41,9 @@
       <div>
         <ul>
           <li>{{this.activity_name}}</li>
-          <li>{{this.price}}</li>
+          <li>{{this.price + ' mili ether'}}</li>
           <li>{{this.participant_limit}}</li>
+          <li>{{getDate}}</li>
         </ul>
       </div>
 
@@ -44,6 +52,11 @@
 </template>
 
 <script>
+function toTimestamp (strDate) {
+  var datum = Date.parse(strDate)
+  return datum / 1000
+}
+
 export default {
   name: 'CreateActivity',
   data () {
@@ -56,11 +69,14 @@ export default {
       participant_limit: null,
       // validation_number: null,
       activity_list: null,
-      isActivePrice: true
-
+      isActivePrice: true,
+      date: new Date()
     }
   },
-  beforeCreate () {
+  computed: {
+    getDate: function () {
+      return toTimestamp(this.date)
+    }
   },
   created () {
     this.c_instance = this.$store.getters.contractInstance()
@@ -80,12 +96,15 @@ export default {
       }
     },
     createActivityButton () {
+      console.log(this.date)
+      console.log(this.date.toString())
+      console.log('in timestamp', toTimestamp(this.date))
       this.pending = true
-      console.log('Try to create')
       const temp = this.c_instance.methods.createActivity(
         this.activity_name,
         this.participant_limit,
-        this.price
+        this.price,
+        toTimestamp(this.date)
       ).send(
         {value: this.$options.filters.toWei('0.1'), from: this.coinbase, gas: 4700000})
       temp.then(function (error, value) {
