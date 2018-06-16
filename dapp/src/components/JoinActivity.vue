@@ -1,12 +1,18 @@
 <template>
   <div>
     <h4 class="display-5">Join The Event</h4>
+    <br>
     <div class="container">
-        <br>
+
         <div class="form-group">
+
           <input type="text" class="form-control col-md-3"  v-model="name" placeholder="Name">
-          <input type="text" class="form-control col-md-3"  v-model="surname" placeholder="Surname">
         </div>
+
+      <div class="form-group">
+        <input type="text" class="form-control col-md-3"  v-model="surname" placeholder="Surname">
+      </div>
+
         <div class="form-group">
           <input type="text" class="form-control col-md-3"  v-model="email" placeholder="E-mail">
         </div>

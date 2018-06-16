@@ -3,12 +3,12 @@
   <div class="container">
     <div class="item  col-xs-12 col-lg-12 list-group-item"  track-by="id" >
       <div class="thumbnail">
-        <img class="center" src="@/assets/unichain_2.png" alt="" />
-        <div class="caption">
-          <h4 class="group inner list-group-item-heading">
-            {{ item['0'] }}</h4>
-          <p class="group inner list-group-item-text">
-            Owner: {{item['1']}}</p>
+        <div class="row">
+        <div class="col-md-8 flex-first">
+          <h4 class="display-4 text-center" >
+            {{ item['0'].toUpperCase() }}</h4>
+          <p class>DESCRIPTION
+            Firat Isbecer is an entrepreneur and an angel investor. Isbecer co-founded Pozitron, a pioneering mobile banking and payments software company that was acquired by London based fintech star Monitise plc in 2014. As the Managing Director of Monitise MEA, Isbecer oversaw the company’s Eastern Europe, Middle East, Central Asia and Africa operations. Monitise was later acquired by US-based financial services tech giant Fiserv Inc in 2017. </p>
           <p class="group inner list-group-item-text"  v-bind:style="{ color: bgColor}">
             {{getActive}}</p>
           <p class="group inner list-group-item-text">
@@ -19,7 +19,11 @@
             Limit:  {{item['5']}}</p>
           <p class="group inner list-group-item-text">
             Date:  {{when}}</p>
+          <p class="group inner list-group-item-text">
+            Owner: {{item['1']}}</p>
         </div>
+        <img class="col-md-4 flex-last" src="@/assets/unichain_2.png" alt="" />
+      </div>
       </div>
       <br>
       <hr>
