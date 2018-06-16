@@ -1,0 +1,14 @@
+version: 0.1
+environment_variables:
+  plaintext:
+    S3_BUCKET_NAME: "www.registration-unichain.com"
+phases:
+  install:
+    commands:
+      - npm install
+      - npm run-script build
+artifacts:
+  files:
+    - '**/*'
+  base-directory: 'docs*'
+  discard-paths: yes
