@@ -1,7 +1,7 @@
 <template>
   <div class="container ">
     <div class="row">
-    <h3 class="col-12 display-4 text-center">Active Events</h3>
+    <h3 class="col-12 display-4 text-center  p-2">Active Events</h3>
     </div>
 
       <!-- <div class="list-group" v-for="activity in activities " v-bind:key="activity.address">
@@ -12,13 +12,12 @@
 
       <div class="row">
 
-        <div class="col-md-3" v-for="activity in activities " v-bind:key="activity.address">
+        <div class="col-md-3 " v-for="activity in activities " v-bind:key="activity.address">
 
-          <div class="card" style="width: 18rem;">
+          <div class="card p-2 m-2" style="width: 18rem;">
             <router-link :to="{path:'/activity/'+activity.address }">
             <img class="card-img-top" src="@/assets/unichain_2.png/" alt="Card image cap">
             <div class="card-body">
-
               <h5 class="card-title">{{activity.name.toUpperCase()}}</h5>
               <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
             </div>
