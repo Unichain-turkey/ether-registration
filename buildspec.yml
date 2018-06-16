@@ -1,7 +1,7 @@
 version: 0.1
 environment_variables:
   plaintext:
-    S3_BUCKET_NAME: "www.registration-unichain-tr.com"
+    S3_BUCKET_NAME: "www.registerium.com"
 phases:
   install:
     commands:
