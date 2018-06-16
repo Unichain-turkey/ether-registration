@@ -5,6 +5,7 @@ environment_variables:
 phases:
   install:
     commands:
+      - cd dapp
       - npm install
       - npm run-script build
 artifacts:
