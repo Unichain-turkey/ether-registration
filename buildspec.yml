@@ -1,7 +1,7 @@
 version: 0.1
 environment_variables:
   plaintext:
-    S3_BUCKET_NAME: "www.registration-unichain.com"
+    S3_BUCKET_NAME: "www.registration-unichain-tr.com"
 phases:
   install:
     commands:
