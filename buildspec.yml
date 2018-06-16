@@ -11,5 +11,5 @@ phases:
 artifacts:
   files:
     - '**/*'
-  base-directory: 'docs*'
+  base-directory: 'dapp/docs/'
   discard-paths: yes
