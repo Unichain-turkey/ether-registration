@@ -7,7 +7,7 @@ phases:
     commands:
       - cd dapp
       - cd dapp && npm install
-      - cd dapp &&npm run-script build
+      - cd dapp && npm run-script build
 artifacts:
   files:
     - '**/*'
