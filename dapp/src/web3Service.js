@@ -2,7 +2,7 @@ import Web3 from 'web3'
 
 import activityContract from '../../build/contracts/Activitycontract.json'
 
-var addrActivityContract = '0x88c015d75be972177f171efcf6fd708d095c83b5'
+var addrActivityContract = '0x93e52492d81532a644acbf47e717485f9ac23187'
 
 var contractInstance = null
 
