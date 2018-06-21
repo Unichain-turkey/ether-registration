@@ -2,9 +2,9 @@
   <div>
     <nav class="navbar sticky-top navbar-light bg-light">
       <a class="navbar-brand" href="#">Registhereum</a>
-      <b>Balance: {{$store.getters.balance}} ETH</b>
       <b>Address: {{$store.getters.currentAddress}}</b>
-      <b>Network: {{$store.getters.network}}</b>
+      <!--<b>Balance: {{$store.getters.balance}} ETH</b>
+      <b>Network: {{$store.getters.network}}</b> -->
       <b>TotalActivity: {{totalActivity}}</b>
       <b></b>
     </nav>
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import store from '@/vuex/store'
 export default {
   name: 'Header',
   data: function () {
@@ -25,8 +26,10 @@ export default {
       totalActivity: null
     }
   },
-  created () {
-    const temp = this.$store.getters.contractInstance().methods.getTotalActivity().call()
+  mounted () {
+    console.log('contract in header  2', store.getters.contract())
+
+    const temp = store.getters.contract().methods.getTotalActivity().call()
     let that = this
     temp.then(function (val) {
       that.totalActivity = val

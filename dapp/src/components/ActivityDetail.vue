@@ -69,10 +69,7 @@ export default {
     }
   },
   mounted () {
-    console.log('address', this.address)
-  },
-  created () {
-    this.c_instance = store.getters.contractInstance()
+    this.c_instance = store.getters.contract()
     this.coinbase = store.getters.currentAddress
     this.web3 = store.getters.web3Instance
     const temp = this.c_instance.methods.getInfoActivity(this.address).call()
