@@ -1,6 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import web3 from 'web3'
 import App from './App'
 import router from './router'
 import store from './vuex/store'
@@ -9,13 +10,10 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import datePicker from 'vue-bootstrap-datetimepicker'
 
-import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
-
-
-import { getNetIdString, getEthWallets, getBalance, isInjected, web3, contractInstance } from './web3Service'
+import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css'
 
 Vue.use(BootstrapVue)
-Vue.use(datePicker);
+Vue.use(datePicker)
 Vue.config.productionTip = false
 
 Vue.filter('toWei', (key) => {
@@ -24,21 +22,10 @@ Vue.filter('toWei', (key) => {
 
 ;(async () => {
   try {
-    const ethWallets = await getEthWallets()
-    const netIdString = await getNetIdString()
-    const balance = await getBalance(ethWallets[0])
-    var result = {
-      'balance': balance,
-      'coinbase': ethWallets[0],
-      'networkId': netIdString,
-      'isInjected': isInjected,
-      'web3': web3
-    }
-    store.dispatch('createWeb3', result)
-    store.dispatch('setContract', contractInstance)
+    await store.dispatch('getContractInstance')
+    await store.dispatch('registerWeb3')
   } catch (e) {
-    // TODO: Handle error
-
+    console.log('uff', e)
   } finally {
     new Vue({
       el: '#app',

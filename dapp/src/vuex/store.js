@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { getWeb3, getContract } from '../web3Service'
 
 Vue.use(Vuex)
-
 export default new Vuex.Store({
   state: {
     web3: {
@@ -26,24 +26,33 @@ export default new Vuex.Store({
   },
   strict: true, // don't leave it true on production
   mutations: {
-    CREATEWEB3 (state, result) {
-      state.web3.balance = result.balance
-      state.web3.coinbase = result.coinbase
-      state.web3.networkId = result.networkId
-      state.web3.isInjected = result.isInjected
+    registerWeb3Instance (state, payload) {
+      console.log('registerWeb3instance Mutation being executed', payload)
+      let result = payload
+      state.web3.isInjected = result.injectedWeb3
       state.web3.web3Instance = result.web3
+      state.web3.coinbase = result.coinbase[0]
+
     },
-    SETCONTRACTINSTANCE (state, result) {
-      state.contractInstance = () => result
-      // todo learn differences
+    registerContractInstance (state, payload) {
+      console.log('Casino contract instance: ', payload)
+      state.contractInstance = () => payload
     }
   },
   actions: {
-    createWeb3 ({ commit }, result) {
-      commit('CREATEWEB3', result)
+    registerWeb3 ({commit}) {
+      getWeb3.then(result => {
+        console.log('committing result to registerWeb3Instance mutation', result)
+        commit('registerWeb3Instance', result)
+      }).catch(e => {
+        console.log('Error in getweb3', e)
+      })
     },
-    setContract ({ commit }, result) {
-      commit('SETCONTRACTINSTANCE', result)
+    getContractInstance ({commit}) {
+      getContract.then(result => {
+        console.log('Try to set contract instanse with data', result)
+        commit('registerContractInstance', result)
+      }).catch(e => console.log('Gene', e))
     }
   },
   getters: {
@@ -62,7 +71,7 @@ export default new Vuex.Store({
     network: state => {
       return state.NETWORKS[state.web3.networkId]
     },
-    contractInstance: state => {
+    contract: state => {
       return state.contractInstance
     }
   }

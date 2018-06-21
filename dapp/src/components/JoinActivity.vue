@@ -38,7 +38,7 @@ export default {
   beforeCreate () {
   },
   created () {
-    this.c_instance = this.$store.getters.contractInstance()
+    this.c_instance = this.$store.getters.contract()
     this.web3 = this.$store.getters.web3Instance
     this.coinbase = this.$store.getters.currentAddress
     // todo change provider then try again
@@ -53,7 +53,9 @@ export default {
   },
   methods: {
     registerAct: function (e) {
-      console.log(this.address)
+      console.log(this.coinbase)
+      console.log(this.web3)
+      console.log(this.c_instance)
       const temp = this.c_instance.methods.registerToActivity(
         this.address,
         this.email

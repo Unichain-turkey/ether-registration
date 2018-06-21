@@ -14,6 +14,10 @@
 </template>
 
 <script>
+import store from '@/vuex/store'
+window.depo = {
+  web3: store
+}
 export default {
   name: 'index',
   data: function () {
@@ -22,12 +26,18 @@ export default {
     }
   },
   mounted () {
-    let _contract = this.$store.getters.contractInstance()
+    let _contract = this.$store.getters.contract()
+    console.log('Contract in index', _contract)
+    console.log('Contract in index', _contract)
+
     _contract.getPastEvents('ActivityCreated', { fromBlock: 0, toBlock: 'latest'}, (err, event) => {
+      console.log(event)
       event.forEach((element) => {
+        console.log(element)
         element = element.returnValues
         this.activities.push({'name': element._name, 'address': element._owner, 'limit': element._limit})
       })
+      console.log(err)
     })
   }
 }
