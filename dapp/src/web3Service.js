@@ -2,23 +2,7 @@ import Web3 from 'web3'
 
 import activityContract from '../../build/contracts/Activitycontract.json'
 
-var addrActivityContract = '0x88c015d75be972177f171efcf6fd708d095c83b5'
-
-var contractInstance = null
-
-let web3 = window.web3
-var isInjected = false
-console.log(window.web3)
-if (typeof web3 !== 'undefined') {
-  web3 = new Web3(web3.currentProvider)
-  contractInstance = new web3.eth.Contract(activityContract.abi, addrActivityContract)
-  isInjected = true
-} else {
-  web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
-  contractInstance = new web3.eth.Contract(activityContract.abi, addrActivityContract)
-
-  isInjected = false
-}
+var addrActivityContract = '0x93e52492d81532a644acbf47e717485f9ac23187'
 
 const NETWORKS = {
   '1': 'Main Net',
@@ -28,28 +12,55 @@ const NETWORKS = {
   '42': 'Kovan test network'
 }
 
-const getNetIdString = async () => {
-  const id = await web3.eth.net.getId()
-  if (typeof id === 'number') {
-    return NETWORKS[id] || 'Truffle Test Network'
+const getContract = new Promise(function (resolve, reject) {
+  console.log('1')
+  let web3 = window.web3
+  let contract = null
+  if (typeof web3 !== 'undefined') {
+    web3 = new Web3(web3.currentProvider)
+    contract = new web3.eth.Contract(activityContract.abi, addrActivityContract)
   } else {
-    return ''
+    web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
+    contract = new web3.eth.Contract(activityContract.abi, addrActivityContract)
   }
-}
 
-const getEthWallets = () =>
-  new Promise((resolve, reject) => {
-    web3.eth.getAccounts((err, res) => {
-      if (!err) return resolve(res)
-      reject(err)
+  resolve(contract)
+})
+
+let getWeb3 = new Promise(function (resolve, reject) {
+  // Check for injected web3 (mist/metamask)
+  var web3js = window.web3
+  if (typeof web3js !== 'undefined') {
+    var web3 = new Web3(web3js.currentProvider)
+    resolve({
+      injectedWeb3: true,
+      web3 () {
+        return web3
+      }
+    })
+  } else {
+    web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545')) // GANACHE FALLBACK
+    resolve({
+      injectedWeb3: false,
+      web3 () {
+        return web3
+      }
+    })
+  }
+})
+  .then(result => {
+    return new Promise(function (resolve, reject) {
+      // Retrieve coinbase
+      result.web3().eth.getAccounts((err, coinbase) => {
+        if (err) {
+          reject(new Error('Unable to retrieve coinbase'))
+        } else {
+          console.log(coinbase)
+          result = Object.assign({}, result, { coinbase })
+          resolve(result)
+        }
+      })
     })
   })
-const getBalance = (account) =>
-  new Promise((resolve, reject) => {
-    web3.eth.getBalance(account, (err, res) => {
-      if (!err) return resolve(res)
-      reject(err)
-    })
-  })
 
-export { getEthWallets, getNetIdString, getBalance, isInjected, web3, contractInstance }
+export {getWeb3, getContract }

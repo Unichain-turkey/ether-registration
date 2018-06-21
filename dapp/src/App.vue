@@ -11,6 +11,8 @@ export default {
   name: 'App',
   components: {
     'header-component': Header
+  },
+  mounted () {
   }
 }
 </script>

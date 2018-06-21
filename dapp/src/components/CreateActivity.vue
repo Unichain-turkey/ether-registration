@@ -78,9 +78,10 @@ export default {
       return toTimestamp(this.date)
     }
   },
-  created () {
-    this.c_instance = this.$store.getters.contractInstance()
+  mounted () {
+    this.c_instance = this.$store.getters.contract()
     this.coinbase = this.$store.getters.currentAddress
+    console.log(this.coinbase)
     const temp = this.c_instance.methods.getTotalActivity().call()
     temp.then(function (val) {
       console.log('Total activity', val)
@@ -96,17 +97,15 @@ export default {
       }
     },
     createActivityButton () {
-      console.log(this.date)
-      console.log(this.date.toString())
-      console.log('in timestamp', toTimestamp(this.date))
       this.pending = true
+      let _base = this.coinbase
       const temp = this.c_instance.methods.createActivity(
         this.activity_name,
         this.participant_limit,
         this.price,
         toTimestamp(this.date)
       ).send(
-        {value: this.$options.filters.toWei('0.1'), from: this.coinbase, gas: 4700000})
+        {value: this.$options.filters.toWei('0.1'), from: _base, gas: 4700000})
       temp.then(function (error, value) {
         console.log(error)
         console.log(value)
