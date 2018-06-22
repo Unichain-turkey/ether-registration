@@ -10,12 +10,12 @@ export default new Router({
   routes: [
     {
       path: '/create',
-      name: 'registration-dapp',
+      name: 'create',
       component: Create
     },
     {
       path: '/',
-      name: 'Index',
+      name: 'index',
       component: Index
     },
     {

@@ -2,7 +2,7 @@ import Web3 from 'web3'
 
 import activityContract from '../../build/contracts/Activitycontract.json'
 
-var addrActivityContract = '0x93e52492d81532a644acbf47e717485f9ac23187'
+var addrActivityContract = '0xe1995ed193da7c21766109bb96690f0c2d42ee44'
 
 const NETWORKS = {
   '1': 'Main Net',
@@ -13,7 +13,6 @@ const NETWORKS = {
 }
 
 const getContract = new Promise(function (resolve, reject) {
-  console.log('1')
   let web3 = window.web3
   let contract = null
   if (typeof web3 !== 'undefined') {

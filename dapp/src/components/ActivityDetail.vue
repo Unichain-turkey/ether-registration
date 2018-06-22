@@ -5,8 +5,8 @@
       <div class="thumbnail">
         <div class="row">
         <div class="col-md-8 flex-first">
-          <h4 class="display-4 text-center" >
-            {{ item['0'].toUpperCase() }}</h4>
+          <h4 class="display-4 text-center text-uppercase" >
+            {{ item['0'] }}</h4>
           <p class>DESCRIPTION
             Firat Isbecer is an entrepreneur and an angel investor. Isbecer co-founded Pozitron, a pioneering mobile banking and payments software company that was acquired by London based fintech star Monitise plc in 2014. As the Managing Director of Monitise MEA, Isbecer oversaw the company’s Eastern Europe, Middle East, Central Asia and Africa operations. Monitise was later acquired by US-based financial services tech giant Fiserv Inc in 2017. </p>
           <p class="group inner list-group-item-text"  v-bind:style="{ color: bgColor}">
