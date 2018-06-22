@@ -13,9 +13,8 @@
       <div class="row">
 
         <div class="col-md-3 " v-for="activity in activities " v-bind:key="activity.address">
-
           <div class="card p-2 m-2" style="width: 18rem;">
-            <router-link :to="{path:'/activity/'+activity.address }">
+            <router-link class="text-dark" :to="{path:'/activity/'+activity.address }">
             <img class="card-img-top" src="@/assets/unichain_2.png/" alt="Card image cap">
             <div class="card-body">
               <h5 class="card-title">{{activity.name.toUpperCase()}}</h5>

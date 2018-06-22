@@ -47,6 +47,9 @@ export default {
     this.c_instance = this.$store.getters.contract()
     this.web3 = this.$store.getters.web3Instance
     this.coinbase = this.$store.getters.currentAddress
+    console.log(this.c_instance)
+    console.log(this.web3)
+    console.log(this.coinbase)
     // todo change provider then try again
     /*
     this.c_instance.events.ParticipantRegisteredAt({
@@ -59,14 +62,13 @@ export default {
   },
   methods: {
     registerAct: function (e) {
-      console.log(this.coinbase)
-      console.log(this.web3)
       console.log(this.c_instance)
+      console.log(this.price)
       const temp = this.c_instance.methods.registerToActivity(
         this.address,
         this.email
       ).send(
-        {value: this.$options.filters.toWei('0.' + this.price), from: this.coinbase, gas: 4700000})
+        {value: this.$options.filters.toWei('0.1'), from: this.coinbase})
       temp.then(function (error, value) {
         console.log(error)
         console.log(value)

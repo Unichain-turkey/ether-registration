@@ -27,22 +27,21 @@ export default new Vuex.Store({
   strict: true, // don't leave it true on production
   mutations: {
     registerWeb3Instance (state, payload) {
-      console.log('registerWeb3instance Mutation being executed', payload)
+      // console.log('registerWeb3instance Mutation being executed', payload)
       let result = payload
       state.web3.isInjected = result.injectedWeb3
       state.web3.web3Instance = result.web3
       state.web3.coinbase = result.coinbase[0]
-
     },
     registerContractInstance (state, payload) {
-      console.log('Casino contract instance: ', payload)
+      // console.log('Casino contract instance: ', payload)
       state.contractInstance = () => payload
     }
   },
   actions: {
     registerWeb3 ({commit}) {
       getWeb3.then(result => {
-        console.log('committing result to registerWeb3Instance mutation', result)
+        // console.log('committing result to registerWeb3Instance mutation', result)
         commit('registerWeb3Instance', result)
       }).catch(e => {
         console.log('Error in getweb3', e)
@@ -50,7 +49,7 @@ export default new Vuex.Store({
     },
     getContractInstance ({commit}) {
       getContract.then(result => {
-        console.log('Try to set contract instanse with data', result)
+        // console.log('Try to set contract instanse with data', result)
         commit('registerContractInstance', result)
       }).catch(e => console.log('Gene', e))
     }

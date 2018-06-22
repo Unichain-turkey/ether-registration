@@ -101,7 +101,7 @@ contract Activitycontract is Ownable
         require(activity.registeredCount < activity.limit);
 
 
-        require(msg.value >= activity.price * 10**17); //price control 1*ether value,now 0.1 ether
+        require(msg.value >= activity.price * 1*10**16); //price control 1*ether value,now 0.1 ether
 
         activity.registeredCount++;
         activity.participants[msg.sender] = Participant(_email, false,false, msg.sender, false,msg.value);
