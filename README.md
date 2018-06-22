@@ -1,6 +1,8 @@
 # smart-activity
 
 > A Vue.js project
+> http://www.unichain-registerium.com.s3-website.eu-central-1.amazonaws.com
+> Use metamask on ropsten network
 
 ## Build Setup
 
