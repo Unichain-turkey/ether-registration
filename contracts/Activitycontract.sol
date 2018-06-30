@@ -70,7 +70,7 @@ contract Activitycontract is Ownable
         if (msg.value != 1* 10**17 ){ //assume 0.1 ether to prevent DDOS, 0.01 ether :)
             revert();
         }
-        // require(activities[msg.sender].owner == address(0)); //if has not  create an activity before
+        require(activities[msg.sender].owner == address(0)); //if has not  create an activity before
         activities[msg.sender] = Activity(
             {
             name:_name,

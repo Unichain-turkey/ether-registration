@@ -22,7 +22,7 @@
           <p class="group inner list-group-item-text">
             Owner: {{item['1']}}</p>
         </div>
-        <img class="col-md-4 flex-last" src="@/assets/unichain_2.png" alt="" />
+          <img class="col-md-4 flex-last" :src="getImageUrl(activity.imageHash)" />
       </div>
       </div>
       <br>

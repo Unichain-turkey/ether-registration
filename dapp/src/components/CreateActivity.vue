@@ -51,6 +51,11 @@
           <button type="button" v-on:click="onUpload"  class="btn btn-outline-info btn-block" >Load image to Ipfs </button>
         </form>
 
+        <div class="form-group">
+          <label for="inputHash">İmage Hash</label>
+          <input type="text" class="form-control" v-model="imageHash" id="inputHash" aria-describedby="hashHelp" placeholder="0x00000000000000000000000000000000">
+          <small id="hashHelp" class="form-text text-muted">Your image hash</small>
+        </div>
 
 
         <br>
@@ -121,14 +126,12 @@ export default {
     },
     onUpload () {
       let ipfs = this.$store.getters.getIpfs
-      console.log(ipfs)
       let reader = new window.FileReader()
       reader.onload = function (e) {
         let buffer = Buffer.from(reader.result)
         ipfs.add(buffer, {progress: (prog) => console.log(`received: ${prog}`)})
           .then((response) => {
             this.imageHash = response[0].hash
-            console.log(response[0].hash)
           }).catch((err) => {
           console.error(err)
         })
@@ -147,7 +150,7 @@ export default {
         this.content,
         this.imageHash
       ).send(
-        {value: this.$options.filters.toWei('0.1'), from: _base, gas: 4700000})
+        {value: this.$options.filters.toWei('0.1'), from: _base, gas: 4500000})
       temp.then(function (error, value) {
         console.log(error)
         console.log(value)
