@@ -81,11 +81,6 @@ export default {
   mounted () {
     this.c_instance = this.$store.getters.contract()
     this.coinbase = this.$store.getters.currentAddress
-    console.log(this.coinbase)
-    const temp = this.c_instance.methods.getTotalActivity().call()
-    temp.then(function (val) {
-      console.log('Total activity', val)
-    })
   },
   methods: {
     free (event) {
