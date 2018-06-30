@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import store from '@/vuex/store'
+import store from '@/store/index'
 export default {
   name: 'Header',
   data: function () {

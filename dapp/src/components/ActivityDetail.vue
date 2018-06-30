@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import store from '@/vuex/store'
+import store from '@/store/index'
 import join from '@/components/JoinActivity'
 
 export default {

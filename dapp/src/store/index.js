@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getWeb3, getContract } from '../web3Service'
+import { getWeb3, getContract } from '../common/web3Service'
 
 Vue.use(Vuex)
 export default new Vuex.Store({

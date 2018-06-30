@@ -1,6 +1,6 @@
 import Web3 from 'web3'
 
-import activityContract from '../../build/contracts/Activitycontract.json'
+import activityContract from '../../../build/contracts/Activitycontract.json'
 
 var addrActivityContract = '0xe1995ed193da7c21766109bb96690f0c2d42ee44'
 

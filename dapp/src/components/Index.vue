@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import store from '@/vuex/store'
+import store from '@/store/index'
 window.depo = {
   web3: store
 }

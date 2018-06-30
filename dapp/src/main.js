@@ -4,7 +4,7 @@ import Vue from 'vue'
 import web3 from 'web3'
 import App from './App'
 import router from './router'
-import store from './vuex/store'
+import store from './store/index'
 import datePicker from 'vue-bootstrap-datetimepicker'
 
 import 'bootstrap/dist/js/bootstrap.js'
