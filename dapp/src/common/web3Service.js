@@ -55,7 +55,6 @@ let getWeb3 = new Promise(function (resolve, reject) {
         if (err) {
           reject(new Error('Unable to retrieve coinbase'))
         } else {
-          console.log(coinbase)
           result = Object.assign({}, result, { coinbase })
           resolve(result)
         }

@@ -14,7 +14,7 @@
           <h3 class="text-center">Active Events</h3>
         </div>
         <div class="row">
-          <div class="col-md-3 " v-for="activity in activities " v-bind:key="activity.address">
+          <div class="col-md-3 " v-for="activity in upcomingActivities " v-bind:key="activity.address">
             <div class="card p-2 m-2" style="width: 18rem;">
               <router-link class="text-dark" :to="{path:'/activity/'+activity.address }">
                 <img class="card-img-top" src="@/assets/unichain_2.png/" alt="Card image cap">
@@ -32,7 +32,7 @@
           <h3 class="text-center">New Events</h3>
         </div>
         <div class="row">
-          <div class="col-md-3 " v-for="activity in activities " v-bind:key="activity.address">
+          <div class="col-md-3 " v-for="activity in pastActivities " v-bind:key="activity.address">
             <div class="card p-2 m-2" style="width: 18rem;">
               <router-link class="text-dark" :to="{path:'/activity/'+activity.address }">
                 <img class="card-img-top" src="@/assets/unichain_2.png/" alt="Card image cap">
@@ -58,19 +58,32 @@
     name: "Admin",
     data: function () {
       return {
-        activities: []
+        upcomingActivities: [],
+        pastActivities: []
       }
     },
     mounted () {
+      var self = this
       let _contract = this.$store.getters.contract()
       let _myAddress = this.$store.getters.currentAddress
 
       _contract.getPastEvents('ActivityCreated', { fromBlock: 0, toBlock: 'latest'}, (err, event) => {
         event.forEach((element) => {
           element = element.returnValues
-          console.log(element)
           if(element._owner === _myAddress){
-            this.activities.push({'name': element._name, 'address': element._owner, 'limit': element._limit})
+            console.log(element)
+            const temp = _contract.methods.getInfoActivity(element.owner).call()
+            temp.then(function (error, value) {
+              if (error){
+                console.log(error)
+              }
+              console.log(temp)
+              if (temp[2]) {
+                self.upcomingActivities.push()
+              }else {
+                self.pastActivities.push()
+              }
+            })
           }
         })
         if(err){
