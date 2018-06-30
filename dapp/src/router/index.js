@@ -4,6 +4,8 @@ import Create from '@/components/CreateActivity.vue'
 import Index from '@/components/Index.vue'
 import Activity from '@/components/ActivityDetail.vue'
 import Admin from '@/components/Admin.vue'
+import Marketplace from '@/components/Marketplace.vue'
+import Entry from '@/components/Entry.vue'
 
 Vue.use(Router)
 
@@ -11,12 +13,17 @@ export default new Router({
   mode: 'history',
   routes: [
     {
+      path: '/',
+      name: 'entry',
+      component: Entry
+    },
+    {
       path: '/create',
       name: 'create',
       component: Create
     },
     {
-      path: '/',
+      path: '/index',
       name: 'index',
       component: Index
     },
@@ -24,6 +31,11 @@ export default new Router({
       path: '/admin',
       name: 'admin',
       component: Admin
+    },
+    {
+      path: '/mp',
+      name: 'marketplace',
+      component: Marketplace
     },
     {
       path: '/activity/:id',

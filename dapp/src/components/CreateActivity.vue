@@ -21,29 +21,23 @@
             Is Active
           </label>
         </div>
-        <br>
-
-        <div class="form-group col-md-3" v-show="isActivePrice">
+        <div class="form-group" v-show="isActivePrice">
           <label for="price">Price</label>
           <input type="number" class="form-control" v-model="price" id="price" placeholder="milli ether">
         </div>
-        <div class="form-group col-md-3">
+        <div class="form-group">
           <label>When</label>
           <date-picker v-model="date" ></date-picker>
-
         </div>
-
-        <br>
-        <div class="form-group col-md-3">
+        <div class="form-group">
           <label for="participantLimit">Participant Limit</label>
           <input type="number" class="form-control" v-model="participant_limit" id="participantLimit">
         </div>
-        <div class="form-group col-md-3">
+        <div class="form-group">
           <label for="content">Content </label>
           <textarea class="form-control" rows="5" id="content" v-model="content" name="text"></textarea>
         </div>
-
-        <form @submit.prevent="uploadImage()">
+        <form>
           <div class="form-group">
             <div class="form-group">
               <label for="inputFile">İmage</label>
@@ -53,27 +47,15 @@
           </div>
           <button type="button" v-on:click="onUpload"  class="btn btn-outline-info btn-block" >Load image to Ipfs </button>
         </form>
-
         <div class="form-group">
           <label for="inputHash">İmage Hash</label>
           <input type="text" class="form-control" v-model="imageHash" id="inputHash" aria-describedby="hashHelp" placeholder="0x00000000000000000000000000000000">
           <small id="hashHelp" class="form-text text-muted">Your image hash</small>
         </div>
-
-
-        <br>
-        <button type="submit" class="btn btn-primary mb-2">Create Activity</button>
+        <button type="submit" class="btn btn-outline-danger btn-block">Create Activity</button>
       </form>
-      <div>
-        <ul>
-          <li>{{this.activity_name}}</li>
-          <li>{{this.price + ' mili ether'}}</li>
-          <li>{{this.participant_limit}}</li>
-          <li>{{getDate}}</li>
-        </ul>
-      </div>
-
     </div>
+    <br/>
   </div>
 </template>
 

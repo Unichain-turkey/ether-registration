@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="$route.name!=='entry'">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <router-link class="navbar-brand" to="/"> Registhereum </router-link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -14,7 +14,7 @@
             <router-link  class="navbar-brand" to="/admin"> My Events </router-link>
           </li>
           <li class="nav-item">
-            <router-link  class="navbar-brand" to="/marketplace"> Marketplace </router-link>
+            <router-link  class="navbar-brand" to="/mp"> Marketplace </router-link>
           </li>
         </ul>
         <span class="form-inline">
