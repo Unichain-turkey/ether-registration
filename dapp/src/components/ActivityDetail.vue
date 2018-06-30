@@ -7,8 +7,7 @@
         <div class="col-md-8 flex-first">
           <h4 class="display-4 text-center text-uppercase" >
             {{ item['0'] }}</h4>
-          <p class>DESCRIPTION
-            Firat Isbecer is an entrepreneur and an angel investor. Isbecer co-founded Pozitron, a pioneering mobile banking and payments software company that was acquired by London based fintech star Monitise plc in 2014. As the Managing Director of Monitise MEA, Isbecer oversaw the company’s Eastern Europe, Middle East, Central Asia and Africa operations. Monitise was later acquired by US-based financial services tech giant Fiserv Inc in 2017. </p>
+          <p class>{{item['7']}}</p>
           <p class="group inner list-group-item-text"  v-bind:style="{ color: bgColor}">
             {{getActive}}</p>
           <p class="group inner list-group-item-text">
@@ -22,7 +21,7 @@
           <p class="group inner list-group-item-text">
             Owner: {{item['1']}}</p>
         </div>
-          <img class="col-md-4 flex-last" :src="getImageUrl(activity.imageHash)" />
+          <img class="col-md-4 flex-last" :src="getImageUrl(item['8'])" />
       </div>
       </div>
       <br>
@@ -72,8 +71,10 @@ export default {
     this.c_instance = store.getters.contract()
     this.coinbase = store.getters.currentAddress
     this.web3 = store.getters.web3Instance
+    console.log("Alo is 2")
     const temp = this.c_instance.methods.getInfoActivity(this.address).call()
     temp.then(function (val) {
+      console.log("Alo",val)
       this.item = val
       if (this.item['2'] === true) {
         this.bgColor = 'green'
