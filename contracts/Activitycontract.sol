@@ -18,6 +18,8 @@ contract Activitycontract is Ownable
         uint limit;
         uint registeredCount;
         uint date;
+        string content;
+        string imageHash;
         string    participationUrl ;//we should change this ,string is visible :)
         bytes32   validateNumber ;//this is a hash  to participant verify themselves for payback money
 
@@ -59,7 +61,7 @@ contract Activitycontract is Ownable
         _;
     }
 
-    function createActivity(string _name,uint _limit,uint _price,uint _date)
+    function createActivity(string _name,uint _limit,uint _price,uint _date,string _content,string _hash)
     onlyActive
     payable
     public
@@ -78,6 +80,8 @@ contract Activitycontract is Ownable
             price:_price,    //only  owner of activity  can change
             limit:_limit,
             date:_date,
+            content:_content,
+            imageHash:_hash,
             registeredCount:0,
             participationUrl:"",
             validateNumber:0
@@ -148,9 +152,9 @@ contract Activitycontract is Ownable
     }
 
     function getInfoActivity(address _activity)
-    public view returns(string,address,bool,uint,uint,uint,uint){
+    public view returns(string,address,bool,uint,uint,uint,uint,string,string){
         Activity storage temp = activities[_activity];
-        return (temp.name,temp.owner,temp.isActive,temp.price,temp.registeredCount,temp.limit,temp.date);
+        return (temp.name,temp.owner,temp.isActive,temp.price,temp.registeredCount,temp.limit,temp.date,temp.content,temp.imageHash);
         
     }
     //Admin methods

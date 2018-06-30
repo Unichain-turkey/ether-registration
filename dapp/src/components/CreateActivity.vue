@@ -35,6 +35,24 @@
           <label for="participantLimit">Participant Limit</label>
           <input type="number" class="form-control" v-model="participant_limit" id="participantLimit">
         </div>
+        <div class="form-group col-md-3">
+          <label for="content">Content </label>
+          <textarea class="form-control" rows="5" id="content" v-model="content" name="text"></textarea>
+        </div>
+
+        <form @submit.prevent="uploadImage()">
+          <div class="form-group">
+            <div class="form-group">
+              <label for="inputFile">İmage</label>
+              <input type="file" class="form-control" @change="onFileChanged" id="inputFile" aria-describedby="fileHelp" placeholder="Place File">
+              <small id="fileHelp" class="form-text text-muted">Load your image</small>
+            </div>
+          </div>
+          <button type="button" v-on:click="onUpload"  class="btn btn-outline-info btn-block" >Load image to Ipfs </button>
+        </form>
+
+
+
         <br>
         <button type="submit" class="btn btn-primary mb-2">Create Activity</button>
       </form>
@@ -52,10 +70,15 @@
 </template>
 
 <script>
+import store from '@/store/'
+window.depo = {
+  web3: store
+}
 function toTimestamp (strDate) {
   var datum = Date.parse(strDate)
   return datum / 1000
 }
+
 
 export default {
   name: 'CreateActivity',
@@ -65,9 +88,11 @@ export default {
       coinbase: null,
       activity_name: '',
       price: null,
+      image: null,
+      imageHash: '',
       is_active: null,
       participant_limit: null,
-      // validation_number: null,
+      content: null,
       activity_list: null,
       isActivePrice: true,
       date: new Date()
@@ -96,6 +121,26 @@ export default {
         this.isActivePrice = true
       }
     },
+    onFileChanged (event) {
+      this.image = event.target.files[0]
+    },
+    onUpload () {
+      let ipfs = this.$store.getters.getIpfs
+      console.log(ipfs)
+      let reader = new window.FileReader()
+      reader.onload = function (e) {
+        let buffer = Buffer.from(reader.result)
+        ipfs.add(buffer, {progress: (prog) => console.log(`received: ${prog}`)})
+          .then((response) => {
+            this.imageHash = response[0].hash
+            console.log(response[0].hash)
+          }).catch((err) => {
+          console.error(err)
+        })
+      }.bind(this)
+      reader.readAsArrayBuffer(this.image)
+    },
+
     createActivityButton () {
       this.pending = true
       let _base = this.coinbase
@@ -103,7 +148,9 @@ export default {
         this.activity_name,
         this.participant_limit,
         this.price,
-        toTimestamp(this.date)
+        toTimestamp(this.date),
+        this.content,
+        this.imageHash
       ).send(
         {value: this.$options.filters.toWei('0.1'), from: _base, gas: 4700000})
       temp.then(function (error, value) {

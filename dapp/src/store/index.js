@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getWeb3, getContract } from '../common/web3Service'
+import { ipfs, getWeb3, getContract } from '../common/web3Service'
 
 Vue.use(Vuex)
 export default new Vuex.Store({
@@ -13,6 +13,7 @@ export default new Vuex.Store({
       balance: null,
       error: null
     },
+    ipfsApi: null,
     contractInstance: null,
     NETWORKS: {
       '1': 'Main Net',
@@ -36,7 +37,10 @@ export default new Vuex.Store({
     registerContractInstance (state, payload) {
       // console.log('Casino contract instance: ', payload)
       state.contractInstance = () => payload
-    }
+    },
+    SETIPFS (state, result) {
+      state.ipfsApi = result
+    },
   },
   actions: {
     registerWeb3 ({commit}) {
@@ -52,7 +56,10 @@ export default new Vuex.Store({
         // console.log('Try to set contract instanse with data', result)
         commit('registerContractInstance', result)
       }).catch(e => console.log('Gene', e))
-    }
+    },
+    ipfsSet ({ commit }) {
+      commit('SETIPFS',ipfs)
+    },
   },
   getters: {
     web3state: state => {
@@ -72,6 +79,9 @@ export default new Vuex.Store({
     },
     contract: state => {
       return state.contractInstance
+    },
+    getIpfs: state => {
+      return state.ipfsApi
     }
   }
 })

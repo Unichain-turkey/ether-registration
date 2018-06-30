@@ -22,6 +22,7 @@ Vue.filter('toWei', (key) => {
   try {
     await store.dispatch('getContractInstance')
     await store.dispatch('registerWeb3')
+    await store.dispatch('ipfsSet')
   } catch (e) {
     console.log('uff', e)
   } finally {

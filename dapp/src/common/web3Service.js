@@ -1,8 +1,9 @@
 import Web3 from 'web3'
+import ipfsAPI from 'ipfs-api'
 
 import activityContract from '../../../build/contracts/Activitycontract.json'
 
-var addrActivityContract = '0xe1995ed193da7c21766109bb96690f0c2d42ee44'
+var addrActivityContract = '0x3b638541437cbf777fb194c97f489f52890200c2'
 
 const NETWORKS = {
   '1': 'Main Net',
@@ -61,5 +62,5 @@ let getWeb3 = new Promise(function (resolve, reject) {
       })
     })
   })
-
-export {getWeb3, getContract }
+const ipfs = ipfsAPI('localhost', '5001', {protocol: 'http'})
+export {ipfs, getWeb3, getContract }
