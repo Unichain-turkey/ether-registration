@@ -15,9 +15,10 @@
   },
   "dependencies": {
     "bootstrap": "4.1.1",
+    "font-awesome": "^4.7.0",
+    "ipfs-api": "22.2.1",
     "jquery": "3.3.1",
     "popper.js": "1.14.3",
-    "font-awesome": "^4.7.0",
     "vue": "^2.5.2",
     "vue-bootstrap-datetimepicker": "^5.0.0-beta.2",
     "vue-router": "^3.0.1",
