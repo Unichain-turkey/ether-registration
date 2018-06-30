@@ -1,6 +1,9 @@
 <template>
   <div>
     <div class="container">
+      <div class="progress" v-if="pending">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+      </div>
       <form @submit.prevent="createActivityButton()">
         <div class="form-group">
           <label for="exampleFormControlInput1">Activity Name</label>
@@ -100,7 +103,8 @@ export default {
       content: null,
       activity_list: null,
       isActivePrice: true,
-      date: new Date()
+      date: new Date(),
+      pending: false
     }
   },
   computed: {
@@ -140,7 +144,6 @@ export default {
     },
 
     createActivityButton () {
-      this.pending = true
       let _base = this.coinbase
       const temp = this.c_instance.methods.createActivity(
         this.activity_name,
@@ -151,9 +154,14 @@ export default {
         this.imageHash
       ).send(
         {value: this.$options.filters.toWei('0.1'), from: _base, gas: 4500000})
+      this.pending = true
       temp.then(function (error, value) {
-        console.log(error)
-        console.log(value)
+        if(error){
+          console.log(error)
+        }else{
+          console.log(value)
+        }
+        this.pending = false
       })
     }
   }

@@ -11,7 +11,7 @@
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="all-active" role="tabpanel" aria-labelledby="home-tab">
         <div>
-          <h3 class="text-center">Active Events</h3>
+          <h3 class="text-center">Upcomming Events</h3>
         </div>
         <div class="row">
           <div class="col-md-3 " v-for="activity in upcomingActivities " v-bind:key="activity.address">
@@ -29,7 +29,7 @@
       </div>
       <div class="tab-pane fade" id="all-past" role="tabpanel" aria-labelledby="profile-tab">
         <div>
-          <h3 class="text-center">New Events</h3>
+          <h3 class="text-center">Past Events</h3>
         </div>
         <div class="row">
           <div class="col-md-3 " v-for="activity in pastActivities " v-bind:key="activity.address">
@@ -50,48 +50,55 @@
 </template>
 
 <script>
-  import store from '@/store'
-  window.depo = {
-    web3: store
-  }
-  export default {
-    name: "Admin",
-    data: function () {
-      return {
-        upcomingActivities: [],
-        pastActivities: []
-      }
-    },
-    mounted () {
-      var self = this
-      let _contract = this.$store.getters.contract()
-      let _myAddress = this.$store.getters.currentAddress
-
-      _contract.getPastEvents('ActivityCreated', { fromBlock: 0, toBlock: 'latest'}, (err, event) => {
-        event.forEach((element) => {
-          element = element.returnValues
-          if(element._owner === _myAddress){
-            console.log(element)
-            const temp = _contract.methods.getInfoActivity(element.owner).call()
-            temp.then(function (error, value) {
-              if (error){
-                console.log(error)
-              }
-              console.log(temp)
-              if (temp[2]) {
-                self.upcomingActivities.push()
-              }else {
-                self.pastActivities.push()
-              }
-            })
-          }
-        })
-        if(err){
-          console.log(err)
+import store from '@/store/index'
+window.depo = {
+  web3: store
+}
+export default {
+  name: "Admin",
+  data: function () {
+    return {
+      upcomingActivities: [],
+      pastActivities: []
+    }
+  },
+  mounted () {
+    var _self = this
+    let _contract = this.$store.getters.contract()
+    let myAddress = this.$store.getters.currentAddress
+    _contract.getPastEvents('ActivityCreated', { fromBlock: 0, toBlock: 'latest'}, (err, event) => {
+      event.forEach((element) => {
+        element = element.returnValues
+        if(element[1] === myAddress){
+          const temp = _contract.methods.getInfoActivity(element[1]).call()
+          temp.then(function (value) {
+            var date = new Date(parseInt(value[6]) * 1000)
+            if (date >= Date.now()) {
+              _self.upcomingActivities.push({
+                'name': value[0],
+                'address': value[1],
+                'limit': value[5],
+                'content': value[7],
+                'imageHash': value[8]
+              })
+            }else {
+              _self.pastActivities.push({
+                'name': value[0],
+                'address': value[1],
+                'limit': value[5],
+                'content': value[7],
+                'imageHash': value[8]
+              })
+            }
+          })
         }
       })
-    }
+      if(err){
+        console.log(err)
+      }
+    })
   }
+}
 </script>
 
 <style scoped>
