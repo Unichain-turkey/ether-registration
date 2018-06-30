@@ -1,0 +1,16 @@
+version: 0.1
+environment_variables:
+  plaintext:
+    S3_BUCKET_NAME: "www.unichain-registerium.com"
+phases:
+  install:
+    commands:
+      - cd dapp
+      - cd dapp && npm install
+      - cd dapp && npm run-script build
+      - aws s3 cp dapp/docs/ s3://${S3_BUCKET_NAME} --recursive
+artifacts:
+  files:
+    - '**/*'
+  base-directory: 'dapp/docs/'
+  discard-paths: yes
