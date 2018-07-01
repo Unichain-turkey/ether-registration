@@ -13,7 +13,7 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '/entry',
       name: 'entry',
       component: Entry
     },
@@ -23,7 +23,7 @@ export default new Router({
       component: Create
     },
     {
-      path: '/index',
+      path: '/',
       name: 'index',
       component: Index
     },

@@ -13,9 +13,6 @@
           <li class="nav-item">
             <router-link  class="navbar-brand" to="/admin"> My Events </router-link>
           </li>
-          <li class="nav-item">
-            <router-link  class="navbar-brand" to="/mp"> Marketplace </router-link>
-          </li>
         </ul>
         <span class="form-inline">
            <b class="mr-sm-2">Logged in as: {{$store.getters.currentAddress}}</b>

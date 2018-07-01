@@ -27,20 +27,30 @@
       <br>
       <hr>
       <br>
-      <join-component :address="address" :price="this.item['3']"></join-component>
+      <div class="row">
+        <div class="col-sm">
+          <join-component :address="address" :price="this.item['3']"></join-component>
+        </div>
+        <div class="col-sm">
+          <admin-actions></admin-actions>
+        </div>
+      </div>
     </div>
-
+    <hr/>
+    <br/>
   </div>
 </template>
 
 <script>
 import store from '@/store/index'
 import join from '@/components/JoinActivity'
+import AdminActions from '@/components/AdminActions'
 
 export default {
   name: 'ActivityDetail',
   components: {
-    'join-component': join
+    'join-component': join,
+    'admin-actions': AdminActions
   },
   data: function () {
     return {

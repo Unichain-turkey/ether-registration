@@ -1,26 +1,29 @@
 <template>
   <div>
+    <div class="progress" v-if="pending">
+      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+    </div>
     <h4 class="display-5">Join The Event</h4>
     <br>
     <div class="container">
 
-        <div class="form-group">
-
-          <input type="text" class="form-control col-md-3"  v-model="name" placeholder="Name">
-        </div>
-
       <div class="form-group">
-        <input type="text" class="form-control col-md-3"  v-model="surname" placeholder="Surname">
+
+        <input type="text" class="form-control col-md-8"  v-model="name" placeholder="Name">
       </div>
 
-        <div class="form-group">
-          <input type="text" class="form-control col-md-3"  v-model="email" placeholder="E-mail">
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control col-md-3"  v-model="number" placeholder="Cell Phone">
-        </div>
+      <div class="form-group">
+        <input type="text" class="form-control col-md-8"  v-model="surname" placeholder="Surname">
+      </div>
 
-        <button  v-on:click="registerAct" class="btn btn-success mb-2">Register</button>
+      <div class="form-group">
+        <input type="text" class="form-control col-md-8"  v-model="email" placeholder="E-mail">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control col-md-8"  v-model="number" placeholder="Cell Phone">
+      </div>
+
+      <button  v-on:click="registerAct" class="btn btn-outline-success btn-block col-md-8">Register</button>
 
     </div>
   </div>
@@ -38,7 +41,8 @@ export default {
       number: null,
       c_instance: null,
       coinbase: null,
-      web3: null
+      web3: null,
+      pending: false
     }
   },
   beforeCreate () {
@@ -69,9 +73,15 @@ export default {
         this.email
       ).send(
         {value: this.$options.filters.toWei('0.1'), from: this.coinbase})
+      this.pending = true
+      var self = this
       temp.then(function (error, value) {
-        console.log(error)
-        console.log(value)
+        if(error){
+          console.log(error)
+        }else{
+          console.log(value)
+        }
+        self.pending = false
       })
     }
 
