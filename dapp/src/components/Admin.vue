@@ -15,7 +15,7 @@
           <h3 class="text-center">Upcomming Events</h3>
         </div>
         <div class="row">
-          <div class="col-4" v-for="activity in upcomingActivities " v-bind:key="activity.key">
+          <div class="col-4" v-for="activity in upcomingActivities" v-bind:key="activity.key">
             <div class="card" style="border: 0">
               <div class="card-body">
                 <router-link class="text-dark" :to="{path:'/activity/'+activity.address }">
@@ -37,7 +37,7 @@
           <h3 class="text-center">Past Events</h3>
         </div>
         <div class="row">
-          <div class="col-4" v-for="activity in pastActivities " v-bind:key="activity.key">
+          <div class="col-4" v-for="activity in pastActivities" v-bind:key="activity.key">
             <div class="card" style="border: 0">
               <div class="card-body">
                 <router-link class="text-dark" :to="{path:'/activity/'+activity.address }">
@@ -70,6 +70,11 @@ export default {
       pastActivities: []
     }
   },
+  methods :{
+    getImageUrl: function (hash) {
+      return 'https://gateway.ipfs.io/ipfs/' + hash + '/'
+    }
+  },
   mounted () {
     var _self = this
     let _contract = this.$store.getters.contract()
@@ -82,7 +87,7 @@ export default {
           temp.then(function (value) {
             var date = new Date(parseInt(value[6]) * 1000)
             if (date >= Date.now()) {
-              _self.upcomingActivities.push({
+              this.upcomingActivities.push({
                 'name': value[0],
                 'address': value[1],
                 'limit': value[5],
@@ -90,7 +95,7 @@ export default {
                 'imageHash': value[8]
               })
             }else {
-              _self.pastActivities.push({
+              this.pastActivities.push({
                 'name': value[0],
                 'address': value[1],
                 'limit': value[5],
@@ -98,7 +103,7 @@ export default {
                 'imageHash': value[8]
               })
             }
-          })
+          }.bind(this))
         }
       })
       if(err){
