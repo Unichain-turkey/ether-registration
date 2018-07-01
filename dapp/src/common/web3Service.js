@@ -3,7 +3,7 @@ import ipfsAPI from 'ipfs-api'
 
 import activityContract from '../../../build/contracts/Activitycontract.json'
 
-var addrActivityContract = '0x42df2fc5927850ab73cbb86621a501015eeab8d1'
+var addrActivityContract = '0x76b191e4fb3360ce2bc87e0e0b34fc2bf1152d37'
 
 const NETWORKS = {
   '1': 'Main Net',
