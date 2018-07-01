@@ -1,7 +1,7 @@
 <template>
   <div>
-
     <div class="progress" v-if="pending">
+      <p>Sending transaction</p>
       <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
     </div>
     <h4 class="display-5">Admin Actions</h4>
@@ -18,8 +18,8 @@
       </div>
       <br/>
       <div class="input-group">
-        <input type="text" class="form-control col-md-6"  v-model="payable" placeholder="True or False" aria-describedby="btnGroupAddon">
-        <button  v-on:click="setPayable" class="btn btn-outline-success btn-block col-md-3">Pay or not</button>
+        <input type="text" class="form-control col-md-6"  v-model="newOwner" placeholder="0x3TH3R3UMADDR3SS" aria-describedby="btnGroupAddon">
+        <button  v-on:click="changeOwner" class="btn btn-outline-success btn-block col-md-3">Say goodbye :(</button>
       </div>
       <br/>
       <div class="input-group">
@@ -42,7 +42,7 @@ export default {
     return {
       userlist: [],
       active: true,
-      payable: true,
+      newOwner: '',
       user: '',
       payCode: '',
 
@@ -51,17 +51,22 @@ export default {
       email: null,
       number: null,
       number1: null,
-      c_instance: null,
+      contractInstance: null,
       coinbase: null,
       web3: null,
       pending: false
     }
   },
+  created () {
+    this.contractInstance = this.$store.getters.contract()
+    this.web3 = this.$store.getters.web3Instance
+    this.coinbase = this.$store.getters.currentAddress
+  },
   methods: {
     adminAct: function (e) {
-      console.log(this.c_instance)
+      console.log(this.contractInstance)
       console.log(this.price)
-      const temp = this.c_instance.methods.registerToActivity(
+      const temp = this.contractInstance.methods.registerToActivity(
         this.address,
         this.email
       ).send(
@@ -70,7 +75,73 @@ export default {
         console.log(error)
         console.log(value)
       })
+    },
+    changeOwner: function (e) {
+      const temp = this.contractInstance.methods.transferOwnershipActivity(
+        this.coinbase,
+        this.newOwner
+      ).send(
+        {from: this.coinbase, gas: 4500000})
+      this.pending = true
+      var self = this
+      temp.then(function (value) {
+        console.log(value)
+        self.pending = false
+      })
+    },
+    setPayCode: function (e) {
+      const temp = this.contractInstance.methods.transferOwnershipActivity(
+        this.coinbase,
+        this.newOwner
+      ).send(
+        {from: this.coinbase, gas: 4500000})
+      this.pending = true
+      var self = this
+      temp.then(function (value) {
+        console.log(value)
+        self.pending = false
+      })
+    },
+    setActive: function (e) {
+      const temp = this.contractInstance.methods.transferOwnershipActivity(
+        this.coinbase,
+        this.newOwner
+      ).send(
+        {from: this.coinbase, gas: 4500000})
+      this.pending = true
+      var self = this
+      temp.then(function (value) {
+        console.log(value)
+        self.pending = false
+      })
+    },
+    deleteUser: function (e) {
+      const temp = this.contractInstance.methods.transferOwnershipActivity(
+        this.coinbase,
+        this.newOwner
+      ).send(
+        {from: this.coinbase, gas: 4500000})
+      this.pending = true
+      var self = this
+      temp.then(function (value) {
+        console.log(value)
+        self.pending = false
+      })
+    },
+    getUserList: function (e) {
+      const temp = this.contractInstance.methods.transferOwnershipActivity(
+        this.coinbase,
+        this.newOwner
+      ).send(
+        {from: this.coinbase, gas: 4500000})
+      this.pending = true
+      var self = this
+      temp.then(function (value) {
+        console.log(value)
+        self.pending = false
+      })
     }
+
 
   }
 }

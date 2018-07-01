@@ -115,9 +115,9 @@ export default {
       let number=0;
       event.forEach((element) => {
         element = element.returnValues
-        console.log(element)
         const temp = _contract.methods.getInfoActivity(element._owner).call()
         temp.then(function (val) {
+          console.log(val)
           var date = new Date(parseInt(val[6]) * 1000)
           var daysDiff = Math.floor((new Date() - date) / (1000 * 60 * 60 * 24));
           if(val[2]===true){

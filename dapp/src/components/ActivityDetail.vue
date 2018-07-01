@@ -81,10 +81,8 @@ export default {
     this.c_instance = store.getters.contract()
     this.coinbase = store.getters.currentAddress
     this.web3 = store.getters.web3Instance
-    console.log("Alo is 2")
     const temp = this.c_instance.methods.getInfoActivity(this.address).call()
     temp.then(function (val) {
-      console.log("Alo",val)
       this.item = val
       if (this.item['2'] === true) {
         this.bgColor = 'green'

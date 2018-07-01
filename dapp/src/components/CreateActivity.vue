@@ -137,13 +137,14 @@ export default {
       ).send(
         {value: this.$options.filters.toWei('0.1'), from: _base, gas: 4500000})
       this.pending = true
+      var self = this
       temp.then(function (error, value) {
         if(error){
           console.log(error)
         }else{
           console.log(value)
         }
-        this.pending = false
+        self.pending = false
       })
     }
   }
