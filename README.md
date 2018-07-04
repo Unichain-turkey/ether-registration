@@ -4,7 +4,7 @@ Activity registration app with ethereum/smart contracts.
 
 *Read this in other languages (Diğer diller): [Türkçe](README.tr.md), [English](README.md)*
 
-#Awards
+# Awards
 
 *BlockCircus Blockchain Hackathon - 3rd Place*
 

@@ -4,7 +4,7 @@ Smart kontratlar ile aktivite kayıt işlemleri için geliştirilmiş web uygula
 
 *Read this in other languages (Diğer diller): [Türkçe](README.tr.md), [English](README.md)*
 
-#Ödüller
+# Ödüller
 
 *BlockCircus Blockchain Hackathon - Üçüncülük*
 
